@@ -16,13 +16,13 @@ class PasswordDatabase:
         self.data[user] = pwd_hash # add the user to the dictionary
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
             pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL) 
-        return True
+        return True # Use successfully registered
         
     def login(self, user, password):
         if user not in self.data: # if the user does not exist in the database, return False
             return False
         pwd_bytes = password.encode('utf-8')
-        return bcrypt.checkpw(pwd_bytes, self.data[user]) # check if the login details are correct
+        return bcrypt.checkpw(pwd_bytes, self.data[user]) # check if the password is correct
 
     def hash_password(self, password):
         pwd_bytes = password.encode("utf-8")
