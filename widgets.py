@@ -2,11 +2,11 @@ import tkinter as tk
 import customtkinter as ctk
 import tkinter.font as font
 
-'''DEBUGGING PURPOSES ONLY
+
 root = ctk.CTk()
 root.geometry('450x576')
 root.configure(bg='#212121')
-'''
+
 
 # CONSTANTS
 FONT_INPUT = font.Font(family='Poppins', size=8, weight='normal')
@@ -33,11 +33,18 @@ class InputBox(ctk.CTkEntry):
     def get_input(self):
         return self.get()
 
-'''How to use widgets
+class DramaCard(ctk.CTkFrame):
+    def __init__(self, master=None, cover=None, title=None, year=None, description=None, genres=None, *args, **kwargs):
+        ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", *args, **kwargs)
+        cover = ImageTk.PhotoImage(Image.open(cover))
+
+
 my_input = InputBox(root, placeholder_text="Enter your name", width=366, height=48)
-my_button = Button(root, text='Sign In', width=366, height=48)
+my_button = Button(root, text='Sign In', width=366, height=48, command=lambda: print(my_input.get()))
+my_drama_card = DramaCard(root)
 
 my_button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 my_input.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
-'''
+my_drama_card.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
+
 root.mainloop()
