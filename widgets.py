@@ -4,7 +4,6 @@ import tkinter.font as font
 from PIL import Image, ImageTk
 import urllib.request
 from io import BytesIO
-import ssl
 
 root = ctk.CTk()
 root.geometry('450x576')
@@ -38,14 +37,14 @@ class InputBox(ctk.CTkEntry):
 
 class DramaCard(ctk.CTkFrame):
     def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, *args, **kwargs):
-        ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", *args, **kwargs)
-        #context=ssl._create_unverified_context()
+        ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
+        self.initialize_cover(cover_url)
+
+    def initialize_cover(self, cover_url=None):
         raw_cover = urllib.request.urlopen(cover_url).read()
-        image = []
-        cover_img = ImageTk.PhotoImage(Image.open(BytesIO(raw_cover)))
-        self.cover = ctk.CTkLabel(self, image=cover_img)
-        self.cover.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
-        image.append(cover_img)
+        self.cover_img = ImageTk.PhotoImage(Image.open(BytesIO(raw_cover)).resize((112*2, 168*2)))
+        cover = ctk.CTkLabel(self, image=self.cover_img)
+        cover.place(relx=0.17, rely=0.5, anchor=tk.CENTER)
 
 
 
