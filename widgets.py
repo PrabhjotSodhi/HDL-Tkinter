@@ -11,8 +11,10 @@ root.configure(bg='#212121')
 
 
 # CONSTANTS
-FONT_INPUT = font.Font(family='Poppins', size=8, weight='normal')
-FONT_BUTTON = font.Font(family='Poppins', size=8, weight='normal')
+FONT_INPUT = font.Font(family='Poppins', size=15, weight='normal')
+FONT_TITLE = font.Font(family='Poppins', size=8, weight='bold')
+FONT_SUBTITLE = font.Font(family='Poppins', size=5, weight='bold')
+FONT_BUTTON = font.Font(family='Poppins', size=15, weight='normal')
 
 
 class WrappingLabel(tk.Label):
@@ -39,6 +41,7 @@ class DramaCard(ctk.CTkFrame):
     def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, *args, **kwargs):
         ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
         self.initialize_cover(cover_url)
+        self.initialize_title(title)
 
     def initialize_cover(self, cover_url=None):
         raw_cover = urllib.request.urlopen(cover_url).read()
@@ -46,11 +49,14 @@ class DramaCard(ctk.CTkFrame):
         cover = ctk.CTkLabel(self, image=self.cover_img)
         cover.place(relx=0.17, rely=0.5, anchor=tk.CENTER)
 
+    def initialize_title(self, title=None):
+        title_label = ctk.CTkLabel(self, text=title, text_font=FONT_TITLE, text_color="#FFFFFF")
+        title_label.place(relx=0.55, rely=0.15, anchor=tk.CENTER)
 
 
 my_input = InputBox(root, placeholder_text="Enter your name", width=366, height=48)
 my_button = Button(root, text='Sign In', width=366, height=48, command=lambda: print(my_input.get()))
-my_drama_card = DramaCard(root, cover_url="https://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg")
+my_drama_card = DramaCard(root, cover_url="https://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", title="Squid Game(2021)")
 
 my_button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 my_input.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
