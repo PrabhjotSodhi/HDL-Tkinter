@@ -7,18 +7,16 @@ from io import BytesIO
 
 
 root = ctk.CTk()
-'''
 root.geometry('450x576')
 root.configure(bg='#212121')
-ctk.deactivate_automatic_dpi_awareness()
-'''
+
 
 
 # CONSTANTS
-FONT_INPUT = font.Font(family='Poppins', size=15, weight='normal')
-FONT_TITLE = font.Font(family='Poppins', size=31, weight='bold')
-FONT_SUBTITLE = font.Font(family='Poppins', size=5, weight='bold')
-FONT_BUTTON = font.Font(family='Poppins', size=15, weight='normal')
+FONT_INPUT = ('Poppins', 15, 'normal')
+FONT_TITLE = ('Poppins', 31, 'bold')
+FONT_SUBTITLE = ('Poppins', 5, 'bold')
+FONT_BUTTON = ('Poppins', 15, 'normal')
 
 
 class WrappingLabel(tk.Label):
@@ -44,6 +42,14 @@ class InputBox(ctk.CTkEntry):
 class DramaCard(ctk.CTkFrame):
     def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, *args, **kwargs):
         ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
+
+        drama_frame = ctk.CTkFrame(self)
+        drama_frame.grid(row=0, column=1)
+        self.columnconfigure(1, weight=1)
+
+        self.content_frame = ctk.CTkFrame(drama_frame)
+        self.content_frame.grid()
+
         self.initialize_cover(cover_url)
         self.initialize_title(title)
 
@@ -51,20 +57,19 @@ class DramaCard(ctk.CTkFrame):
         raw_cover = urllib.request.urlopen(cover_url).read()
         self.cover_img = ImageTk.PhotoImage(Image.open(BytesIO(raw_cover)).resize((112*2, 168*2)))
         cover = ctk.CTkLabel(self, image=self.cover_img)
-        cover.place(relx=0.17, rely=0.5, anchor=tk.CENTER)
+        cover.grid(row=0, column=0, sticky="nesw")
 
     def initialize_title(self, title=None):
         title_label = ctk.CTkLabel(self, text=title, text_font=FONT_TITLE, text_color="#FFFFFF")
         title_label.place(relx=0.55, rely=0.15, anchor=tk.CENTER)
 
-'''
+
 my_input = InputBox(root, placeholder_text="Enter your name", width=366, height=48)
 my_button = Button(root, text='Sign In', width=366, height=48, command=lambda: print(my_input.get()))
-my_drama_card = DramaCard(root, cover_url="https://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", title="Squid Game(2021)")
+my_drama_card = DramaCard(root, cover_url="http://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", title="Squid Game(2021)")
 
-my_button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-my_input.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
-my_drama_card.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
+#my_button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+#my_input.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
+my_drama_card.grid()
 
 root.mainloop()
-'''
