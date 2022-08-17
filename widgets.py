@@ -42,26 +42,31 @@ class InputBox(ctk.CTkEntry):
 class DramaCard(ctk.CTkFrame):
     def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, *args, **kwargs):
         ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
+        self.grid_propagate(False)
 
         drama_frame = ctk.CTkFrame(self)
         drama_frame.grid(row=0, column=1)
         self.columnconfigure(1, weight=1)
 
         self.content_frame = ctk.CTkFrame(drama_frame)
-        self.content_frame.grid()
+        self.content_frame.grid(row=0, column=0, sticky="nesw")
 
         self.initialize_cover(cover_url)
         self.initialize_title(title)
 
     def initialize_cover(self, cover_url=None):
         raw_cover = urllib.request.urlopen(cover_url).read()
-        self.cover_img = ImageTk.PhotoImage(Image.open(BytesIO(raw_cover)).resize((112*2, 168*2)))
+        img = Image.open(BytesIO(raw_cover))
+        baseheight = 168
+        hpercent = (baseheight / float(img.size[1]))
+        wsize = int((float(img.size[0]) * float(hpercent)))
+        self.cover_img = ImageTk.PhotoImage(img.resize((wsize, baseheight), Image.ANTIALIAS))
         cover = ctk.CTkLabel(self, image=self.cover_img)
         cover.grid(row=0, column=0, sticky="nesw")
 
     def initialize_title(self, title=None):
-        title_label = ctk.CTkLabel(self, text=title, text_font=FONT_TITLE, text_color="#FFFFFF")
-        title_label.place(relx=0.55, rely=0.15, anchor=tk.CENTER)
+        title_label = ctk.CTkLabel(self.content_frame, text=title, text_font=FONT_TITLE, text_color="#FFFFFF")
+        title_label.grid(row=0, column=0, sticky="nesw")
 
 
 my_input = InputBox(root, placeholder_text="Enter your name", width=366, height=48)
