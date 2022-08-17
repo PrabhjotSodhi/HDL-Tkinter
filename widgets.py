@@ -5,14 +5,18 @@ from PIL import Image, ImageTk
 import urllib.request
 from io import BytesIO
 
+
 root = ctk.CTk()
+'''
 root.geometry('450x576')
 root.configure(bg='#212121')
+ctk.deactivate_automatic_dpi_awareness()
+'''
 
 
 # CONSTANTS
 FONT_INPUT = font.Font(family='Poppins', size=15, weight='normal')
-FONT_TITLE = font.Font(family='Poppins', size=8, weight='bold')
+FONT_TITLE = font.Font(family='Poppins', size=31, weight='bold')
 FONT_SUBTITLE = font.Font(family='Poppins', size=5, weight='bold')
 FONT_BUTTON = font.Font(family='Poppins', size=15, weight='normal')
 
@@ -53,7 +57,7 @@ class DramaCard(ctk.CTkFrame):
         title_label = ctk.CTkLabel(self, text=title, text_font=FONT_TITLE, text_color="#FFFFFF")
         title_label.place(relx=0.55, rely=0.15, anchor=tk.CENTER)
 
-
+'''
 my_input = InputBox(root, placeholder_text="Enter your name", width=366, height=48)
 my_button = Button(root, text='Sign In', width=366, height=48, command=lambda: print(my_input.get()))
 my_drama_card = DramaCard(root, cover_url="https://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", title="Squid Game(2021)")
@@ -63,3 +67,4 @@ my_input.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
 my_drama_card.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
 root.mainloop()
+'''
