@@ -15,7 +15,7 @@ root.configure(bg='#212121')
 
 # CONSTANTS
 FONT_INPUT = ('Poppins', 15, 'normal')
-FONT_TITLE = ('Poppins', 31, 'bold')
+FONT_TITLE = ('Poppins', 27, 'bold')
 FONT_SUBTITLE = ('Poppins', 5, 'bold')
 FONT_BUTTON = ('Poppins', 15, 'normal')
 
