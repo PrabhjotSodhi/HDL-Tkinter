@@ -6,10 +6,11 @@ import urllib.request
 from io import BytesIO
 
 
+"""
 root = ctk.CTk()
 root.geometry('450x576')
 root.configure(bg='#212121')
-
+"""
 
 
 # CONSTANTS
@@ -30,7 +31,7 @@ class Button(ctk.CTkButton):
     '''A custom-styled button class'''
     def __init__(self, master=None, *args, **kwargs):
         ctk.CTkButton.__init__(self, master, text_font=FONT_BUTTON, *args, **kwargs)
-        self.bind(self.configure(fg_color="#48BB78",hover_color="#38A169",text_color="#FFFFFF"))
+        self.bind(self.configure(fg_color="#48BB78",hover_color="#38A169",text_color="#FFFFFF",corner_radius=0))
 
 class InputBox(ctk.CTkEntry):
     def __init__(self, master=None, *args, **kwargs):
@@ -68,7 +69,7 @@ class DramaCard(ctk.CTkFrame):
         title_label = ctk.CTkLabel(self.content_frame, text=title, text_font=FONT_TITLE, text_color="#FFFFFF")
         title_label.grid(row=0, column=0, sticky="nesw")
 
-
+'''
 my_input = InputBox(root, placeholder_text="Enter your name", width=366, height=48)
 my_button = Button(root, text='Sign In', width=366, height=48, command=lambda: print(my_input.get()))
 my_drama_card = DramaCard(root, cover_url="http://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", title="Squid Game(2021)")
@@ -78,3 +79,4 @@ my_drama_card = DramaCard(root, cover_url="http://image.tmdb.org/t/p/original/dD
 my_drama_card.grid()
 
 root.mainloop()
+'''
