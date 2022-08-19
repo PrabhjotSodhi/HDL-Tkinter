@@ -29,6 +29,7 @@ class PasswordDatabase:
         salt = bcrypt.gensalt() # generate a salt that is used to hash the password
         return bcrypt.hashpw(pwd_bytes, salt)
 
+'''
 db = PasswordDatabase()
 
 # Test the system
@@ -42,3 +43,4 @@ print("-------------Login-------------")
 print(db.login('john', '123'))
 print(db.login('john', '345'))
 print(db.login('joe', '678'))
+'''

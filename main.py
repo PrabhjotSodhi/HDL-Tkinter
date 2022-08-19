@@ -2,8 +2,10 @@ import sys
 import customtkinter as ctk
 import widgets as w
 import tkinter as tk
+from backend.encryption import PasswordDatabase
 
 ctk.set_appearance_mode('dark')
+db = PasswordDatabase()
 #ctk.deactivate_automatic_dpi_awareness()
 
 class App(ctk.CTk):
@@ -13,7 +15,6 @@ class App(ctk.CTk):
         self.title("HangukDramaList")
         self.geometry("450x576")
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
-        
 
         self.grid_rowconfigure(0, weight="1")
         self.grid_columnconfigure(0, weight="1")
@@ -61,14 +62,22 @@ class LoginScreen(ctk.CTkFrame):
         password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48)
         password.grid(pady=(0,27))
 
-        w.Button(content_frame, text="Sign In", width=366, height=48, command=lambda: parent.show_screen(SignupScreen)).grid()
+        w.Button(content_frame, text="Sign In", width=366, height=48, command=lambda: self.sign_in(username, password)).grid()
         #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
 
         signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
-        signup_frame.grid(sticky="s", pady=(87,28))
+        signup_frame.grid(sticky="", pady=(87,28))
 
         ctk.CTkLabel(signup_frame, text="Don't have an account?", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
         ctk.CTkButton(signup_frame, text="Sign Up", text_font=w.FONT_INPUT, text_color="#48BB78", fg_color="#212121", hover_color="#212121", width=30, command=lambda: parent.show_screen(SignupScreen)).grid(row=0, column=1,pady=0,padx=0)
+    
+    def sign_in(self, username, password):
+        success = db.login(username.get(), password.get())
+        print(success)
+        if success:
+            self.parent.show_screen(SignupScreen)
+        else:
+            print("success")
 
 class SignupScreen(ctk.CTkFrame):
     def __init__(self, parent):
