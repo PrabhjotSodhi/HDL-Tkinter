@@ -21,11 +21,9 @@ class App(ctk.CTk):
         self.grid_columnconfigure(0, weight="1")
 
         self.screens = {}
-        self.login_screen = LoginScreen
-        self.signup_screen = SignupScreen
-        self.home_screen = HomeScreen
-
-        self.user_data = {}
+        self.LoginScreen = LoginScreen
+        self.SignupScreen = SignupScreen
+        self.HomeScreen = HomeScreen
 
         for i in {LoginScreen, SignupScreen, HomeScreen}:
             frame = i(self)
@@ -62,7 +60,7 @@ class LoginScreen(ctk.CTkFrame):
         username.grid(pady=(0,27))
 
         ctk.CTkLabel(content_frame, text="Password", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48)
+        password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48) # add show="*",
         password.grid(pady=(0,27))
 
         w.Button(content_frame, text="Sign In", width=366, height=48, command=lambda: self.sign_in(parent, username, password)).grid()
@@ -78,8 +76,9 @@ class LoginScreen(ctk.CTkFrame):
         user_data = db.login(str(username.get()), str(password.get()))
         print(f"username:{username.get()}, password:{password.get()}, {user_data}")
         if user_data:
-            parent.user_data = user_data[::len(user_data)-1]
-            parent.show_screen(HomeScreen)
+            user_data = user_data[::len(user_data)-1]
+            #parent.HomeScreen.title.configure(text=f"Search Drama, {user_data[0]}")
+            parent.show_screen(parent.HomeScreen)
         else:
             messagebox.showwarning("Please try again","Please enter the correct username and/or password") # TODO: Improve by saying different error if no user found 
 
@@ -126,7 +125,7 @@ class SignupScreen(ctk.CTkFrame):
         success = db.register(str(nickname.get()), str(username.get()), str(password.get()))
         print(f"nickname:{nickname.get()}, username:{username.get()}, password:{password.get()}, {success}")
         if success:
-            parent.show_screen(HomeScreen)
+            parent.show_screen(parent.HomeScreen)
 
 
 class HomeScreen(ctk.CTkFrame):
@@ -141,19 +140,16 @@ class HomeScreen(ctk.CTkFrame):
         content_frame.grid_columnconfigure(0, weight=1)
         content_frame.grid_rowconfigure(0, weight=1)
 
-        print(parent.user_data)
-        ctk.CTkLabel(content_frame, text=f"Search Drama, {parent.user_data}", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(sticky="nws", pady=(29,60))
+        signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
+        signup_frame.grid(sticky="", pady=(87,28))
+        
+        self.title = ctk.CTkLabel(content_frame, text="Search Drama, John", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w")
+        self.title.grid(sticky="nws", pady=(29,60))
 
+        search = w.InputBox(signup_frame, placeholder_text="Search for a drama...", width=132, height=24)
+        search.grid(row=0, column=1, sticky="nws")
+        w.Button(signup_frame, text="Search", width=48*2, height=48, command="").grid(row=0, column=1)
 
-        ctk.CTkLabel(content_frame, text="Email", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        username = w.InputBox(content_frame, placeholder_text="Enter your email", width=366, height=48)
-        username.grid(pady=(0,27))
-
-        ctk.CTkLabel(content_frame, text="Password", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48)
-        password.grid(pady=(0,27))
-
-        w.Button(content_frame, text="Sign In", width=366, height=48, command=lambda: self.sign_in(parent, username, password)).grid()
         #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
 
         signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
