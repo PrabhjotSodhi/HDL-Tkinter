@@ -12,7 +12,6 @@ watchlist = {
     ],
 }
 
-
 class PasswordDatabase:
     def __init__(self):
         try:
@@ -34,9 +33,10 @@ class PasswordDatabase:
         if user not in self.data: # if the user does not exist in the database, return False
             return False
         pwd_bytes = password.encode('utf-8')
-        #if bcrypt.checkpw(pwd_bytes, self.data[user][1]): # if the password is correct, return True
-        #    return self.data[user][0:2]
-        return bcrypt.checkpw(pwd_bytes, self.data[user][1]) # check if the password is correct
+        if bcrypt.checkpw(pwd_bytes, self.data[user][1]): # if the password is correct, return True
+            return self.data[user]
+        else:
+            return False
 
     def hash_password(self, password):
         pwd_bytes = password.encode("utf-8")
@@ -44,6 +44,7 @@ class PasswordDatabase:
         return bcrypt.hashpw(pwd_bytes, salt)
 
 
+'''
 db = PasswordDatabase()
 
 # Test the system
@@ -57,7 +58,7 @@ print("-------------Login-------------")
 print(db.login('john', '123'))
 print(db.login('john', '345'))
 print(db.login('joe', '678'))
-
+'''
 
 
 #{user: [nickname, pass, {currently watching: [],  }}
