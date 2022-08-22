@@ -4,6 +4,7 @@ import tkinter.font as font
 from PIL import Image, ImageTk
 import urllib.request
 from io import BytesIO
+import webbrowser
 
 
 """
@@ -68,6 +69,22 @@ class DramaCard(ctk.CTkFrame):
     def initialize_title(self, title=None):
         title_label = ctk.CTkLabel(self.content_frame, text=title, text_font=FONT_TITLE, text_color="#FFFFFF")
         title_label.grid(row=0, column=0, sticky="nesw")
+
+class footer(ctk.CTkFrame):
+    def __init__(self, master=None, *args, **kwargs):
+        ctk.CTkFrame.__init__(self, master, width=272, height=108, bg_color="#212121", fg_color="#212121",corner_radius=0, *args, **kwargs)
+        self.grid_propagate(False)
+
+        github_url = "http://github.com/PrabhjotSodhi"
+        tmdb_url = "http://www.themoviedb.org/"
+
+        ctk.CTkLabel(self, text="Designed & Built by", text_font=FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(row=0, sticky="nws")
+        ctk.CTkButton(self, text="Prabhjot Sodhi", text_font=FONT_INPUT, text_color="#48BB78", fg_color="#212121", hover_color="#212121", width=30, command=lambda aurl=github_url:webbrowser.open_new(github_url)).grid(row=0, column=1,pady=0,padx=0)
+
+        ctk.CTkLabel(self, text="Powered by", text_font=FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(row=1, sticky="nws")
+        ctk.CTkButton(self, text="TMDB API", text_font=FONT_INPUT, text_color="#48BB78", fg_color="#212121", hover_color="#212121", width=30, command=lambda aurl=tmdb_url:webbrowser.open_new(tmdb_url)).grid(row=1, column=1,pady=0,padx=0)
+
+
 
 '''
 my_input = InputBox(root, placeholder_text="Enter your name", width=366, height=48)
