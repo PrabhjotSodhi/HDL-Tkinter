@@ -157,7 +157,7 @@ class HomeScreen(ctk.CTkFrame):
         w.Button(search_frame, text="Search", width=96, height=48, command=lambda: self.search_drama(search, drama_card_frame)).grid(row=0, column=1)
 
         #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
-        drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#FFFFFF", width=366, height=168, corner_radius=0)
+        drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=366, height=168, corner_radius=0)
         drama_card_frame.grid(row=2, sticky="nws")
 
         w.Button(content_frame, text="View current watchlist", width=366, height=48, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=3,pady=(64,0))

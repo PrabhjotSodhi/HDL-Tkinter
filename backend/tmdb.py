@@ -24,13 +24,18 @@ def search_drama(drama):
     results = drama_response.json()['results']
 
     filter_results = [x for x in results if x['original_language'] == 'ko']
+    try:
+        genres = ','.join([genre_options.get(i) for i in filter_results[0]['genre_ids'] if i is not None])
+    except: #TypeError
+        genres = "Drama"
 
     filter_json = {
         "name": filter_results[0]['name'],
         "year": filter_results[0]['first_air_date'][:4],
         "description": filter_results[0]['overview'],
-        "genres": [genre_options.get(i) for i in filter_results[0]['genre_ids'] if i is not None],
+        "genres": genres,
         "poster_path": f"http://image.tmdb.org/t/p/original{filter_results[0]['poster_path']}",
     }
     #final_json = json.dumps(filter_json)
+    #print(filter_json["genres"])
     return filter_json

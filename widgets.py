@@ -48,15 +48,20 @@ class DramaCard(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
         self.grid_propagate(False)
 
-        self.cover_frame = ctk.CTkFrame(self)
-        self.cover_frame.grid(row=0, column=0, sticky="nesw")
+        self.cover_frame = ctk.CTkFrame(self, width=112, height=168, fg_color="#333333")
+        self.cover_frame.grid(row=0, column=0)
+        self.cover_frame.grid_propagate(False)
 
-        drama_frame = ctk.CTkFrame(self)
-        drama_frame.grid(row=0, column=1, sticky="")
+        drama_frame = ctk.CTkFrame(self, fg_color="#333333")
+        drama_frame.grid(row=0, column=1, columnspan=2, sticky="news")
+        drama_frame.grid_propagate(False)
+        drama_frame.grid_rowconfigure(0, weight=1)
+        drama_frame.grid_columnconfigure(0, weight=1)
+        self.columnconfigure(0, weight=0)
         self.columnconfigure(1, weight=1)
 
-        self.content_frame = ctk.CTkFrame(drama_frame)
-        self.content_frame.grid(row=0, column=0, sticky="nesw")
+        self.content_frame = ctk.CTkFrame(drama_frame, width=229, height=136, fg_color="#333333")
+        self.content_frame.grid(row=0, column=0, sticky="ns")
         self.content_frame.grid_propagate(False)
 
         self.initialize_cover(cover_url)
@@ -70,16 +75,16 @@ class DramaCard(ctk.CTkFrame):
         wsize = int((float(img.size[0]) * float(hpercent)))
         self.cover_img = ImageTk.PhotoImage(img.resize((wsize, baseheight), Image.ANTIALIAS))
         cover = ctk.CTkLabel(self.cover_frame, image=self.cover_img)
-        cover.grid(row=0, column=0, sticky="nesw")
+        cover.grid(row=0, column=0, sticky="news")
 
     def initialize_content(self, title=None, year="YYYY", description=None, genres=None):
-        ctk.CTkLabel(self.content_frame, text=f"{title}({year})", text_font=FONT_DRAMA_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, column=0, sticky="nw")
+        ctk.CTkLabel(self.content_frame, text=f"{title}({year})", text_font=FONT_DRAMA_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, column=0, sticky="n")
 
-        ctk.CTkLabel(self.content_frame, text="Description", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=1, column=0, sticky="nw")
-        ctk.CTkLabel(self.content_frame, text=description, text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w", justify="left", wraplength=300).grid(row=2, column=0, sticky="nw")
+        ctk.CTkLabel(self.content_frame, text="Description", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=1, column=0, sticky="n")
+        ctk.CTkLabel(self.content_frame, text=description, text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w", justify="left", wraplength=300).grid(row=2, column=0, sticky="n")
         
-        ctk.CTkLabel(self.content_frame, text="Genres", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=3, column=0, sticky="nw")
-        ctk.CTkLabel(self.content_frame, text=genres, text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w").grid(row=4, column=0, sticky="nw")
+        ctk.CTkLabel(self.content_frame, text="Genres", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=3, column=0, sticky="n")
+        ctk.CTkLabel(self.content_frame, text=str(genres), text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w").grid(row=4, column=0, sticky="n")
 
 class footer(ctk.CTkFrame):
     def __init__(self, master=None, *args, **kwargs):
