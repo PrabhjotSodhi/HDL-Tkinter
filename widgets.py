@@ -23,11 +23,11 @@ FONT_DESCRIPTION = ('Poppins', 7, 'normal')
 FONT_BUTTON = ('Poppins', 15, 'normal')
 
 
-class WrappingLabel(tk.Label):
+class WrappingLabel(ctk.CTkLabel):
     '''a type of Label that automatically adjusts the wrap to the size'''
     # https://stackoverflow.com/questions/62485520/how-to-wrap-the-text-in-a-tkinter-label-dynamically
-    def __init__(self, master=None, **kwargs):
-        tk.Label.__init__(self, master, **kwargs)
+    def __init__(self, master=None, *args, **kwargs):
+        ctk.CTkLabel.__init__(self, master, *args, **kwargs)
         self.bind('<Configure>', lambda e: self.config(wraplength=self.winfo_width()))
 
 class Button(ctk.CTkButton):
@@ -48,19 +48,19 @@ class DramaCard(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
         self.grid_propagate(False)
 
-        self.cover_frame = ctk.CTkFrame(self, fg_color="red")
+        self.cover_frame = ctk.CTkFrame(self)
         self.cover_frame.grid(row=0, column=0, sticky="nesw")
 
-        drama_frame = ctk.CTkFrame(self, fg_color='white')
+        drama_frame = ctk.CTkFrame(self)
         drama_frame.grid(row=0, column=1, sticky="")
         self.columnconfigure(1, weight=1)
 
-        self.content_frame = ctk.CTkFrame(drama_frame, fg_color="#48BB78")
+        self.content_frame = ctk.CTkFrame(drama_frame)
         self.content_frame.grid(row=0, column=0, sticky="nesw")
         self.content_frame.grid_propagate(False)
 
         self.initialize_cover(cover_url)
-        self.initialize_title(title, year)
+        self.initialize_content(title, year, description, genres)
 
     def initialize_cover(self, cover_url=None):
         raw_cover = urllib.request.urlopen(cover_url).read()
@@ -72,9 +72,14 @@ class DramaCard(ctk.CTkFrame):
         cover = ctk.CTkLabel(self.cover_frame, image=self.cover_img)
         cover.grid(row=0, column=0, sticky="nesw")
 
-    def initialize_title(self, title=None, year="YYYY"):
-        title_label = ctk.CTkLabel(self.content_frame, text=f"{title}({year})", text_font=FONT_DRAMA_TITLE, text_color="#FFFFFF")
-        title_label.grid(row=0, column=0, sticky="nw")
+    def initialize_content(self, title=None, year="YYYY", description=None, genres=None):
+        ctk.CTkLabel(self.content_frame, text=f"{title}({year})", text_font=FONT_DRAMA_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, column=0, sticky="nw")
+
+        ctk.CTkLabel(self.content_frame, text="Description", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=1, column=0, sticky="nw")
+        ctk.CTkLabel(self.content_frame, text=description, text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w", justify="left", wraplength=300).grid(row=2, column=0, sticky="nw")
+        
+        ctk.CTkLabel(self.content_frame, text="Genres", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=3, column=0, sticky="nw")
+        ctk.CTkLabel(self.content_frame, text=genres, text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w").grid(row=4, column=0, sticky="nw")
 
 class footer(ctk.CTkFrame):
     def __init__(self, master=None, *args, **kwargs):
