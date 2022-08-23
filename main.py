@@ -139,27 +139,30 @@ class HomeScreen(ctk.CTkFrame):
         super().__init__(parent)
 
         self.configure(fg_color="#212121")
-        content_frame = ctk.CTkFrame(self, fg_color="#212121")
-        content_frame.grid(row=0, column=0, sticky="")
+        content_frame = ctk.CTkFrame(self, fg_color="#212121", width=366, height=512, corner_radius=0)
+        content_frame.grid(row=0, column=0, sticky="", pady=(0,0))
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
         content_frame.grid_columnconfigure(0, weight=1)
         content_frame.grid_rowconfigure(0, weight=1)
+        content_frame.grid_propagate(False)
         
         self.title = ctk.CTkLabel(content_frame, text="Search Drama, John", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w")
-        self.title.grid(row=0, sticky="nws", pady=(0,14))
+        self.title.grid(row=0, sticky="nws", pady=(5,14))
 
         search_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
-        search_frame.grid(row=1, sticky="nws")
+        search_frame.grid(row=1, sticky="nws", pady=(0,14.5))
         search = w.InputBox(search_frame, placeholder_text="Search for a drama...", width=264, height=48)
-        search.grid(row=0, column=0, sticky="nws", padx=(0,6))
+        search.grid(row=0, column=0, sticky="nws")
         w.Button(search_frame, text="Search", width=96, height=48, command=lambda: self.search_drama(search)).grid(row=0, column=1)
 
         #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
+        drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#FFFFFF", width=366, height=168, corner_radius=0)
+        drama_card_frame.grid(row=2, sticky="nws")
 
-        w.Button(content_frame, text="View current watchlist", width=366, height=48, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=3,pady=(266,14))
+        w.Button(content_frame, text="View current watchlist", width=366, height=48, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=3,pady=(64,0))
 
-        w.footer(content_frame).grid(row=4, sticky="", pady=(0,28))
+        w.footer(content_frame).grid(row=4, sticky="", pady=(0,0))
         #signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
         #signup_frame.grid(sticky="", pady=(87,28))
 
