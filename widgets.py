@@ -17,7 +17,9 @@ root.configure(bg='#212121')
 # CONSTANTS
 FONT_INPUT = ('Poppins', 15, 'normal')
 FONT_TITLE = ('Poppins', 27, 'bold')
-FONT_SUBTITLE = ('Poppins', 5, 'bold')
+FONT_DRAMA_TITLE = ('Poppins', 15, 'bold')
+FONT_SUBTITLE = ('Poppins', 9, 'bold')
+FONT_DESCRIPTION = ('Poppins', 7, 'normal')
 FONT_BUTTON = ('Poppins', 15, 'normal')
 
 
@@ -46,15 +48,19 @@ class DramaCard(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
         self.grid_propagate(False)
 
-        drama_frame = ctk.CTkFrame(self)
-        drama_frame.grid(row=0, column=1)
+        self.cover_frame = ctk.CTkFrame(self, fg_color="red")
+        self.cover_frame.grid(row=0, column=0, sticky="nesw")
+
+        drama_frame = ctk.CTkFrame(self, fg_color='white')
+        drama_frame.grid(row=0, column=1, sticky="")
         self.columnconfigure(1, weight=1)
 
-        self.content_frame = ctk.CTkFrame(drama_frame)
+        self.content_frame = ctk.CTkFrame(drama_frame, fg_color="#48BB78")
         self.content_frame.grid(row=0, column=0, sticky="nesw")
+        self.content_frame.grid_propagate(False)
 
         self.initialize_cover(cover_url)
-        self.initialize_title(title)
+        self.initialize_title(title, year)
 
     def initialize_cover(self, cover_url=None):
         raw_cover = urllib.request.urlopen(cover_url).read()
@@ -63,12 +69,12 @@ class DramaCard(ctk.CTkFrame):
         hpercent = (baseheight / float(img.size[1]))
         wsize = int((float(img.size[0]) * float(hpercent)))
         self.cover_img = ImageTk.PhotoImage(img.resize((wsize, baseheight), Image.ANTIALIAS))
-        cover = ctk.CTkLabel(self, image=self.cover_img)
+        cover = ctk.CTkLabel(self.cover_frame, image=self.cover_img)
         cover.grid(row=0, column=0, sticky="nesw")
 
-    def initialize_title(self, title=None):
-        title_label = ctk.CTkLabel(self.content_frame, text=title, text_font=FONT_TITLE, text_color="#FFFFFF")
-        title_label.grid(row=0, column=0, sticky="nesw")
+    def initialize_title(self, title=None, year="YYYY"):
+        title_label = ctk.CTkLabel(self.content_frame, text=f"{title}({year})", text_font=FONT_DRAMA_TITLE, text_color="#FFFFFF")
+        title_label.grid(row=0, column=0, sticky="nw")
 
 class footer(ctk.CTkFrame):
     def __init__(self, master=None, *args, **kwargs):

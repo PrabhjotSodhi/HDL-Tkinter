@@ -154,7 +154,7 @@ class HomeScreen(ctk.CTkFrame):
         search_frame.grid(row=1, sticky="nws", pady=(0,14.5))
         search = w.InputBox(search_frame, placeholder_text="Search for a drama...", width=264, height=48)
         search.grid(row=0, column=0, sticky="nws")
-        w.Button(search_frame, text="Search", width=96, height=48, command=lambda: self.search_drama(search)).grid(row=0, column=1)
+        w.Button(search_frame, text="Search", width=96, height=48, command=lambda: self.search_drama(search, drama_card_frame)).grid(row=0, column=1)
 
         #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
         drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#FFFFFF", width=366, height=168, corner_radius=0)
@@ -169,9 +169,16 @@ class HomeScreen(ctk.CTkFrame):
         #ctk.CTkLabel(signup_frame, text="Designed & Built by", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
         #ctk.CTkButton(signup_frame, text="Prabhjot Sodhi", text_font=w.FONT_INPUT, text_color="#48BB78", fg_color="#212121", hover_color="#212121", width=30, command=).grid(row=0, column=1,pady=0,padx=0)
 
-    def search_drama(self, search):
+    def search_drama(self, search, parent_frame):
         print(search.get())
         result = tmdb.search_drama(search.get())
+        try:
+            for widgets in parent_frame.winfo_children():
+                widgets.destroy()
+        except:
+            pass
+        w.DramaCard(parent_frame, cover_url=result["poster_path"], title=result["name"], year=result["year"], description=result["description"], genres=result["genres"]).grid(sticky="news")
+            
 
 class WatchListScreen(ctk.CTkFrame):
     def __init__(self, parent):

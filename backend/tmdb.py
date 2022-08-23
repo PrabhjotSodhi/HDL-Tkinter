@@ -26,12 +26,11 @@ def search_drama(drama):
     filter_results = [x for x in results if x['original_language'] == 'ko']
 
     filter_json = {
-        'name': filter_results[0]['name'],
-        'year': filter_results[0]['first_air_date'][:4],
-        'description': filter_results[0]['overview'],
-        'genres': [genre_options.get(i) for i in filter_results[0]['genre_ids'] if i is not None],
-        'poster_path': f"https://image.tmdb.org/t/p/original{filter_results[0]['poster_path']}",
+        "name": filter_results[0]['name'],
+        "year": filter_results[0]['first_air_date'][:4],
+        "description": filter_results[0]['overview'],
+        "genres": [genre_options.get(i) for i in filter_results[0]['genre_ids'] if i is not None],
+        "poster_path": f"http://image.tmdb.org/t/p/original{filter_results[0]['poster_path']}",
     }
-    final_json = json.dumps(filter_json)
-    print(final_json)
-    return final_json
+    #final_json = json.dumps(filter_json)
+    return filter_json
