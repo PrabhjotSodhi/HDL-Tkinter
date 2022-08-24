@@ -10,6 +10,8 @@ watchlist = {
     ],
     "on_hold":[
     ],
+    "dropped":[
+    ],
 }
 
 class PasswordDatabase:
