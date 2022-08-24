@@ -65,7 +65,7 @@ class LoginScreen(ctk.CTkFrame):
         password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48) # add show="*",
         password.grid(pady=(0,27))
 
-        w.Button(content_frame, text="Sign In", width=366, height=48, command=lambda: self.sign_in(parent, username, password)).grid()
+        w.Button(content_frame, text="Sign In", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_in(parent, username, password)).grid()
         #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
 
         signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
@@ -116,7 +116,7 @@ class SignupScreen(ctk.CTkFrame):
         password = w.InputBox(entry_frame, placeholder_text="Enter your password", width=366, height=48)
         password.grid()
 
-        w.Button(content_frame, text="Sign Up", width=366, height=48, command=lambda: self.sign_up(parent, nickname, username, password)).grid(pady=(27,0))
+        w.Button(content_frame, text="Sign Up", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_up(parent, nickname, username, password)).grid(pady=(27,0))
         #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
 
         signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
@@ -154,13 +154,13 @@ class HomeScreen(ctk.CTkFrame):
         search_frame.grid(row=1, sticky="nws", pady=(0,14.5))
         search = w.InputBox(search_frame, placeholder_text="Search for a drama...", width=264, height=48)
         search.grid(row=0, column=0, sticky="nws")
-        w.Button(search_frame, text="Search", width=96, height=48, command=lambda: self.search_drama(search, drama_card_frame)).grid(row=0, column=1)
+        w.Button(search_frame, text="Search", width=96, height=48, text_font=w.FONT_BUTTON, command=lambda: self.search_drama(search, drama_card_frame)).grid(row=0, column=1)
 
         #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
-        drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=366, height=168, corner_radius=0)
+        drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=366, height=168*1.5, corner_radius=0)
         drama_card_frame.grid(row=2, sticky="nws")
 
-        w.Button(content_frame, text="View current watchlist", width=366, height=48, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=3,pady=(64,0))
+        w.Button(content_frame, text="View current watchlist", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=3,pady=(64,0))
 
         w.footer(content_frame).grid(row=4, sticky="", pady=(0,0))
         #signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
@@ -177,7 +177,8 @@ class HomeScreen(ctk.CTkFrame):
                 widgets.destroy()
         except:
             pass
-        w.DramaCard(parent_frame, cover_url=result["poster_path"], title=result["name"], year=result["year"], description=result["description"], genres=result["genres"]).grid(sticky="news")
+        drama_card = w.DramaCard(parent_frame, cover_url=result["poster_path"], title=result["name"], year=result["year"], description=result["description"], genres=result["genres"])
+        drama_card.grid(sticky="news")
             
 
 class WatchListScreen(ctk.CTkFrame):

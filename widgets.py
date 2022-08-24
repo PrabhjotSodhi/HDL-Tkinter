@@ -33,7 +33,7 @@ class WrappingLabel(ctk.CTkLabel):
 class Button(ctk.CTkButton):
     '''A custom-styled button class'''
     def __init__(self, master=None, *args, **kwargs):
-        ctk.CTkButton.__init__(self, master, text_font=FONT_BUTTON, *args, **kwargs)
+        ctk.CTkButton.__init__(self, master, *args, **kwargs)
         self.bind(self.configure(fg_color="#48BB78",hover_color="#38A169",text_color="#FFFFFF",corner_radius=0))
 
 class InputBox(ctk.CTkEntry):
@@ -45,10 +45,10 @@ class InputBox(ctk.CTkEntry):
 
 class DramaCard(ctk.CTkFrame):
     def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, *args, **kwargs):
-        ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
+        ctk.CTkFrame.__init__(self, master, width=366, height=168*1.5, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
         self.grid_propagate(False)
 
-        self.cover_frame = ctk.CTkFrame(self, width=112, height=168, fg_color="#333333")
+        self.cover_frame = ctk.CTkFrame(self, width=112, height=168*1.5, fg_color="#333333")
         self.cover_frame.grid(row=0, column=0)
         self.cover_frame.grid_propagate(False)
 
@@ -66,11 +66,12 @@ class DramaCard(ctk.CTkFrame):
 
         self.initialize_cover(cover_url)
         self.initialize_content(title, year, description, genres)
+        self.initialize_add_to_watchlist()
 
     def initialize_cover(self, cover_url=None):
         raw_cover = urllib.request.urlopen(cover_url).read()
         img = Image.open(BytesIO(raw_cover))
-        baseheight = 168
+        baseheight = 252
         hpercent = (baseheight / float(img.size[1]))
         wsize = int((float(img.size[0]) * float(hpercent)))
         self.cover_img = ImageTk.PhotoImage(img.resize((wsize, baseheight), Image.ANTIALIAS))
@@ -86,12 +87,17 @@ class DramaCard(ctk.CTkFrame):
         ctk.CTkLabel(self.content_frame, text="Genres", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=3, column=0, sticky="nw")
         ctk.CTkLabel(self.content_frame, text=str(genres), text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w").grid(row=4, column=0, sticky="nw")
 
-        add_to_watchlist_frame = ctk.CTkFrame(self.content_frame).grid(row=5, column=0, sticky="")
-        watchlist_dropdown = ctk.CTkComboBox(add_to_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], width=136, height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
+    def initialize_add_to_watchlist(self):
+        add_to_watchlist_frame = ctk.CTkFrame(self.content_frame, fg_color="#333333", bg_color="#333333")
+        add_to_watchlist_frame.grid(row=5, column=0, sticky="")
+        add_to_watchlist_frame.grid_propagate(False)
+        watchlist_dropdown = ctk.CTkComboBox(add_to_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], width=136, height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
         watchlist_dropdown.grid(row=0, column=0, sticky="")
         watchlist_dropdown.set("Select an option")  # set initial value
-        Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, command=lambda: print(watchlist_dropdown.get())).grid(row=0, column=1, sticky="")
+        Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION, command=lambda: print(watchlist_dropdown.get())).grid(row=0, column=1, sticky="")
         #ctk.CTkButton(add_to_watchlist_frame, text="Add to Watchlist", text_font=FONT_BUTTON, command=lambda: print("Add to Watchlist")).grid(row=0, column=1, sticky="")
+
+
         
 
 class footer(ctk.CTkFrame):

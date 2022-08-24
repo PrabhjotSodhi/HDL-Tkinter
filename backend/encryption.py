@@ -36,6 +36,7 @@ class PasswordDatabase:
             return False
         pwd_bytes = password.encode('utf-8')
         if bcrypt.checkpw(pwd_bytes, self.data[user][1]): # if the password is correct, return True
+            self.user = self.data[user]
             return self.data[user]
         else:
             return False
@@ -44,6 +45,30 @@ class PasswordDatabase:
         pwd_bytes = password.encode("utf-8")
         salt = bcrypt.gensalt() # generate a salt that is used to hash the password
         return bcrypt.hashpw(pwd_bytes, salt)
+    
+    def add_to_watchlist(self, value, drama):
+        user = self.user[1]
+        if value == "Select an option": # if the user did not select an option, return False
+            return False
+        elif value == "Plan to watch":
+            self.user[2]["plan_to_watch"].append(drama['id']) # add the title to the plan to watch list
+            self.data[user] = self.user
+        elif value == "Currently watching":
+            self.user[2]["currently_watching"].append(drama['id'])
+            self.data[user] = self.user
+        elif value == "Completed":
+            self.user[2]["completed"].append(drama['id'])
+            self.data[user] = self.user
+        elif value == "On hold":
+            self.user[2]["on_hold"].append(drama['id'])
+            self.data[user] = self.user
+        elif value == "Dropped":
+            self.user[2]["dropped"].append(drama['id'])
+            self.data[user] = self.user
+        else:
+            return False
+        with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
+            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 '''

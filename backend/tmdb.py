@@ -30,6 +30,7 @@ def search_drama(drama):
         genres = "Drama"
 
     filter_json = {
+        "id": filter_results[0]['id'],
         "name": filter_results[0]['name'],
         "year": filter_results[0]['first_air_date'][:4],
         "description": filter_results[0]['overview'],
