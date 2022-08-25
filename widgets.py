@@ -94,8 +94,25 @@ class DramaCard(ctk.CTkFrame):
         watchlist_dropdown = ctk.CTkComboBox(add_to_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], width=136, height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
         watchlist_dropdown.grid(row=0, column=0, sticky="")
         watchlist_dropdown.set("Select an option")  # set initial value
-        Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION, command=lambda: print(watchlist_dropdown.get())).grid(row=0, column=1, sticky="")
+        Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION, command=lambda: add_to_watchlist()).grid(row=0, column=1, sticky="")
         #ctk.CTkButton(add_to_watchlist_frame, text="Add to Watchlist", text_font=FONT_BUTTON, command=lambda: print("Add to Watchlist")).grid(row=0, column=1, sticky="")
+
+        def add_to_watchlist():
+            value = watchlist_dropdown.get()
+            if value == "Select an option": # if the user did not select an option, return False
+                print("Pleasee select an option")
+            elif value == "Plan to watch":
+                print(value)
+            elif value == "Currently watching":
+                print(value)
+            elif value == "Completed":
+                print(value)
+            elif value == "On hold":
+                print(value)
+            elif value == "Dropped":
+                print(value)
+            else:
+                print("Invaild option selected")
 
 
         
