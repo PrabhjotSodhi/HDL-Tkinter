@@ -21,6 +21,7 @@ class PasswordDatabase:
                 self.data = pickle.load(f)
         except: # if file does not exist or is empty, create new dictionary
             self.data = {}
+        print(self.data)
 
     def register(self, nickname, user, password):
         if user in self.data: # if the user already exists in the database, return False
@@ -46,31 +47,38 @@ class PasswordDatabase:
         salt = bcrypt.gensalt() # generate a salt that is used to hash the password
         return bcrypt.hashpw(pwd_bytes, salt)
     
-    def add_to_watchlist(self, value, drama):
+    def add_to_watchlist(self, value, drama_id):
         user = self.user[1]
-        print(self.data)
+        print(value)
         if value == "Select an option": # if the user did not select an option, return False
+            print("Value did not update!")
             return False
         elif value == "Plan to watch":
-            self.user[2]["plan_to_watch"].append(drama['id']) # add the title to the plan to watch list
+            self.user[2]["plan_to_watch"].append(drama_id) # add the title to the plan to watch list
+            print(self.user)
             self.data[user] = self.user
         elif value == "Currently watching":
-            self.user[2]["currently_watching"].append(drama['id'])
+            print("Got to here :)")
+            self.user[2]["currently_watching"].append(drama_id)
             self.data[user] = self.user
         elif value == "Completed":
-            self.user[2]["completed"].append(drama['id'])
+            print("Got to here :)")
+            self.user[2]["completed"].append(drama_id)
             self.data[user] = self.user
         elif value == "On hold":
-            self.user[2]["on_hold"].append(drama['id'])
+            print("Got to here :)")
+            self.user[2]["on_hold"].append(drama_id)
             self.data[user] = self.user
         elif value == "Dropped":
-            self.user[2]["dropped"].append(drama['id'])
+            print("Got to here :)")
+            self.user[2]["dropped"].append(drama_id)
             self.data[user] = self.user
         else:
             return False
+        print(self.data[user])    
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
-            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
-            print(self.data)
+            pickle.dump(self.data[user], f, protocol=pickle.HIGHEST_PROTOCOL)    
+
 
 
 '''

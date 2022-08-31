@@ -96,11 +96,11 @@ class DramaCard(ctk.CTkFrame):
         add_to_watchlist_frame = ctk.CTkFrame(self.content_frame, fg_color="#333333", bg_color="#333333")
         add_to_watchlist_frame.grid(row=5, column=0, sticky="")
         add_to_watchlist_frame.grid_propagate(False)
-        watchlist_dropdown = ctk.CTkComboBox(add_to_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], width=136, height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
-        watchlist_dropdown.grid(row=0, column=0, sticky="")
-        watchlist_dropdown.set("Select an option")  # set initial value
-        self.value = watchlist_dropdown.get()
-        self.add_to_watchlist_button = Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION, command=lambda: add_to_watchlist)
+        self.watchlist_dropdown = ctk.CTkComboBox(add_to_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], width=136, height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
+        self.watchlist_dropdown.grid(row=0, column=0, sticky="")
+        self.watchlist_dropdown.set("Select an option")  # set initial value
+        self.value = self.watchlist_dropdown.get()
+        self.add_to_watchlist_button = Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION)
         self.add_to_watchlist_button.grid(row=0, column=1, sticky="")
         #ctk.CTkButton(add_to_watchlist_frame, text="Add to Watchlist", text_font=FONT_BUTTON, command=lambda: print("Add to Watchlist")).grid(row=0, column=1, sticky="")
 

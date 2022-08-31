@@ -178,7 +178,7 @@ class HomeScreen(ctk.CTkFrame):
         except:
             pass
         drama_card = w.DramaCard(parent_frame, cover_url=result["poster_path"], title=result["name"], year=result["year"], description=result["description"], genres=result["genres"])
-        drama_card.add_to_watchlist_button.configure(lambda e: db.add_to_watchlist(drama_card.value, result["id"]))
+        drama_card.add_to_watchlist_button.configure(command=lambda: db.add_to_watchlist(drama_card.watchlist_dropdown.get(), result["id"]))
         drama_card.grid(sticky="news")
 
             
