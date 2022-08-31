@@ -5,6 +5,9 @@ from PIL import Image, ImageTk
 import urllib.request
 from io import BytesIO
 import webbrowser
+from backend.encryption import PasswordDatabase
+
+db = PasswordDatabase()
 
 
 """
@@ -44,7 +47,7 @@ class InputBox(ctk.CTkEntry):
         return self.get()
 
 class DramaCard(ctk.CTkFrame):
-    def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, *args, **kwargs):
+    def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, drama_id=None, *args, **kwargs):
         ctk.CTkFrame.__init__(self, master, width=366, height=168*1.5, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
         self.grid_propagate(False)
 
@@ -63,6 +66,8 @@ class DramaCard(ctk.CTkFrame):
         self.content_frame = ctk.CTkFrame(drama_frame, width=229, height=136, fg_color="#333333")
         self.content_frame.grid(row=0, column=0, sticky="ns")
         self.content_frame.grid_propagate(False)
+
+        self.drama_id = drama_id
 
         self.initialize_cover(cover_url)
         self.initialize_content(title, year, description, genres)
@@ -94,15 +99,18 @@ class DramaCard(ctk.CTkFrame):
         watchlist_dropdown = ctk.CTkComboBox(add_to_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], width=136, height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
         watchlist_dropdown.grid(row=0, column=0, sticky="")
         watchlist_dropdown.set("Select an option")  # set initial value
-        Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION, command=lambda: add_to_watchlist()).grid(row=0, column=1, sticky="")
+        self.value = watchlist_dropdown.get()
+        self.add_to_watchlist_button = Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION, command=lambda: add_to_watchlist)
+        self.add_to_watchlist_button.grid(row=0, column=1, sticky="")
         #ctk.CTkButton(add_to_watchlist_frame, text="Add to Watchlist", text_font=FONT_BUTTON, command=lambda: print("Add to Watchlist")).grid(row=0, column=1, sticky="")
 
-        def add_to_watchlist():
-            value = watchlist_dropdown.get()
+        def add_to_watchlist(self):
+            
             if value == "Select an option": # if the user did not select an option, return False
                 print("Pleasee select an option")
             elif value == "Plan to watch":
                 print(value)
+                db.add_to_watchlist(value, self.drama_id)
             elif value == "Currently watching":
                 print(value)
             elif value == "Completed":

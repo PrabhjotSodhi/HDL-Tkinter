@@ -77,10 +77,10 @@ class LoginScreen(ctk.CTkFrame):
         parent.bind('<Return>', lambda e: self.sign_in(parent, username, password))
 
     def sign_in(self, parent, username, password):
-        user_data = db.login(str(username.get()), str(password.get()))
-        print(f"username:{username.get()}, password:{password.get()}, {user_data}")
-        if user_data:
-            user_data = user_data[::len(user_data)-1]
+        self.user_data = db.login(str(username.get()), str(password.get()))
+        print(f"username:{username.get()}, password:{password.get()}, {self.user_data}")
+        if self.user_data:
+            self.user_data = self.user_data[::len(self.user_data)-1]
             #parent.HomeScreen.title.configure(text=f"Search Drama, {user_data[0]}")
             parent.show_screen(parent.HomeScreen)
         else:
@@ -147,7 +147,7 @@ class HomeScreen(ctk.CTkFrame):
         content_frame.grid_rowconfigure(0, weight=1)
         content_frame.grid_propagate(False)
         
-        self.title = ctk.CTkLabel(content_frame, text="Search Drama, John", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w")
+        self.title = ctk.CTkLabel(content_frame, text="Search Drama", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w")
         self.title.grid(row=0, sticky="nws", pady=(5,14))
 
         search_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
@@ -178,7 +178,9 @@ class HomeScreen(ctk.CTkFrame):
         except:
             pass
         drama_card = w.DramaCard(parent_frame, cover_url=result["poster_path"], title=result["name"], year=result["year"], description=result["description"], genres=result["genres"])
+        drama_card.add_to_watchlist_button.configure(lambda e: db.add_to_watchlist(drama_card.value, result["id"]))
         drama_card.grid(sticky="news")
+
             
 
 class WatchListScreen(ctk.CTkFrame):

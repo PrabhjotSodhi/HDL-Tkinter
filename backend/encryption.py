@@ -48,6 +48,7 @@ class PasswordDatabase:
     
     def add_to_watchlist(self, value, drama):
         user = self.user[1]
+        print(self.data)
         if value == "Select an option": # if the user did not select an option, return False
             return False
         elif value == "Plan to watch":
@@ -69,6 +70,7 @@ class PasswordDatabase:
             return False
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
             pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
+            print(self.data)
 
 
 '''
