@@ -1,13 +1,14 @@
 import sys
 import customtkinter as ctk
 import widgets as w
-import backend.tmdb as tmdb
+from backend.tmdb import TMDB
 import tkinter as tk
 from tkinter import messagebox
 from backend.encryption import PasswordDatabase
 
 ctk.set_appearance_mode('dark')
 db = PasswordDatabase()
+tmdb = TMDB()
 #ctk.deactivate_automatic_dpi_awareness()
 
 class App(ctk.CTk):
