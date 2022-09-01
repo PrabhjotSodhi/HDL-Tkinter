@@ -134,7 +134,6 @@ class SignupScreen(ctk.CTkFrame):
         if success:
             parent.show_screen(parent.HomeScreen)
 
-
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)

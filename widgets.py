@@ -104,8 +104,8 @@ class DramaCard(ctk.CTkFrame):
         self.add_to_watchlist_button.grid(row=0, column=1, sticky="")
         #ctk.CTkButton(add_to_watchlist_frame, text="Add to Watchlist", text_font=FONT_BUTTON, command=lambda: print("Add to Watchlist")).grid(row=0, column=1, sticky="")
 
+        """
         def add_to_watchlist(self):
-            
             if value == "Select an option": # if the user did not select an option, return False
                 print("Pleasee select an option")
             elif value == "Plan to watch":
@@ -121,6 +121,7 @@ class DramaCard(ctk.CTkFrame):
                 print(value)
             else:
                 print("Invaild option selected")
+        """
 
 
         
