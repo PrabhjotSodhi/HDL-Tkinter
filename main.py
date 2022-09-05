@@ -63,7 +63,7 @@ class LoginScreen(ctk.CTkFrame):
         username.grid(pady=(0,27))
 
         ctk.CTkLabel(content_frame, text="Password", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48) # add show="*",
+        password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48, show="*") # add show="*",
         password.grid(pady=(0,27))
 
         w.Button(content_frame, text="Sign In", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_in(parent, username, password)).grid()
@@ -114,7 +114,7 @@ class SignupScreen(ctk.CTkFrame):
         username.grid()
 
         ctk.CTkLabel(entry_frame, text="Password", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        password = w.InputBox(entry_frame, placeholder_text="Enter your password", width=366, height=48)
+        password = w.InputBox(entry_frame, placeholder_text="Enter your password", width=366, height=48, show="*")
         password.grid()
 
         w.Button(content_frame, text="Sign Up", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_up(parent, nickname, username, password)).grid(pady=(27,0))
