@@ -63,11 +63,10 @@ class LoginScreen(ctk.CTkFrame):
         username.grid(pady=(0,27))
 
         ctk.CTkLabel(content_frame, text="Password", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48, show="*") # add show="*",
+        password = w.InputBox(content_frame, placeholder_text="Enter your password", width=366, height=48, show="*")
         password.grid(pady=(0,27))
 
         w.Button(content_frame, text="Sign In", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_in(parent, username, password)).grid()
-        #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
 
         signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
         signup_frame.grid(sticky="", pady=(87,28))
@@ -80,12 +79,14 @@ class LoginScreen(ctk.CTkFrame):
     def sign_in(self, parent, username, password):
         self.user_data = db.login(str(username.get()), str(password.get()))
         print(f"username:{username.get()}, password:{password.get()}, {self.user_data}")
-        if self.user_data:
+        if self.user_data == "User does not exist":
+            messagebox.showwarning("User not found","Please enter the correct username")
+        elif self.user_data and not self.user_data == "User does not exist":
             self.user_data = self.user_data[::len(self.user_data)-1]
             #parent.HomeScreen.title.configure(text=f"Search Drama, {user_data[0]}")
             parent.show_screen(parent.HomeScreen)
         else:
-            messagebox.showwarning("Please try again","Please enter the correct username and/or password") # TODO: Improve by saying different error if no user found 
+            messagebox.showwarning("Please try again","Please enter the correct username and/or password")
 
 class SignupScreen(ctk.CTkFrame):
     def __init__(self, parent):
@@ -118,7 +119,6 @@ class SignupScreen(ctk.CTkFrame):
         password.grid()
 
         w.Button(content_frame, text="Sign Up", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_up(parent, nickname, username, password)).grid(pady=(27,0))
-        #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
 
         signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
         signup_frame.grid(sticky="", pady=(87,28))

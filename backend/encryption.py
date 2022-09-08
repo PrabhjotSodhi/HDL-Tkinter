@@ -34,7 +34,7 @@ class PasswordDatabase:
     def login(self, user, password):
         print(self.data)
         if user not in self.data: # if the user does not exist in the database, return False
-            return False
+            return "User does not exist"
         pwd_bytes = password.encode('utf-8')
         if bcrypt.checkpw(pwd_bytes, self.data[user][1]): # if the password is correct, return True
             self.user = user
