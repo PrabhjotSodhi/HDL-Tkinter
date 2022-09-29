@@ -24,12 +24,16 @@ class PasswordDatabase:
 
     def register(self, nickname, user, password):
         if user in self.data: # if the user already exists in the database, return False
-            return False
+            print("nidnaidniwand")
+            return "User already exists"
+        if len(password) < 6:
+            return "paswword < 6"
         pwd_hash = self.hash_password(password) # hash the password
         self.data[user] = [nickname, pwd_hash, watchlist] # add the user to the dictionary
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
             pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL) 
-        return True # Use successfully registered
+        self.user = user
+        return self.data[user] # Use successfully registered
         
     def login(self, user, password):
         print(self.data)
@@ -66,6 +70,7 @@ class PasswordDatabase:
         else:
             return False
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
+            print(data[self.user])
             pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 

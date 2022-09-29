@@ -129,10 +129,19 @@ class SignupScreen(ctk.CTkFrame):
         parent.bind('<Return>', lambda e: self.sign_in(parent, username, password))
 
     def sign_up(self, parent, nickname, username, password):
-        success = db.register(str(nickname.get()), str(username.get()), str(password.get()))
-        print(f"nickname:{nickname.get()}, username:{username.get()}, password:{password.get()}, {success}")
-        if success:
+        self.user_data = db.register(str(nickname.get()), str(username.get()), str(password.get()))
+        print(f"nickname:{nickname.get()}, username:{username.get()}, password:{password.get()}, {self.user_data}")
+        if self.user_data == "User already exists":
+            print("hahahah")
+            messagebox.showwarning("User already exists","Please go to the sign in")
+        elif self.user_data == "paswword < 6":
+            messagebox.showwarning("Password too short","Please enter a password with at least 6 characters")
+        elif self.user_data and not self.user_data == "User already exists" and not self.user_data == "paswword < 6":
+            self.user_data = self.user_data[::len(self.user_data)-1]
+            #parent.HomeScreen.title.configure(text=f"Search Drama, {user_data[0]}")
             parent.show_screen(parent.HomeScreen)
+        else:
+            messagebox.showwarning("Please try again","Please enter the correct username and/or password")
 
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, parent):
