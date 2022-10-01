@@ -63,7 +63,7 @@ class DramaCard(ctk.CTkFrame):
         self.columnconfigure(0, weight=0)
         self.columnconfigure(1, weight=1)
 
-        self.content_frame = ctk.CTkFrame(drama_frame, width=229, height=136, fg_color="#333333")
+        self.content_frame = ctk.CTkFrame(drama_frame, width=229, height=136, fg_color="red")
         self.content_frame.grid(row=0, column=0, sticky="ns")
         self.content_frame.grid_propagate(False)
 
@@ -93,8 +93,8 @@ class DramaCard(ctk.CTkFrame):
         ctk.CTkLabel(self.content_frame, text=str(genres), text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w").grid(row=4, column=0, sticky="nw")
 
     def initialize_add_to_watchlist(self):
-        add_to_watchlist_frame = ctk.CTkFrame(self.content_frame, fg_color="#333333", bg_color="#333333")
-        add_to_watchlist_frame.grid(row=5, column=0, sticky="")
+        add_to_watchlist_frame = ctk.CTkFrame(self.content_frame, fg_color="green", bg_color="green")
+        add_to_watchlist_frame.grid(row=5, column=0, sticky="nw")
         add_to_watchlist_frame.grid_propagate(False)
         self.watchlist_dropdown = ctk.CTkComboBox(add_to_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], width=136, height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
         self.watchlist_dropdown.grid(row=0, column=0, sticky="")
@@ -102,29 +102,7 @@ class DramaCard(ctk.CTkFrame):
         self.value = self.watchlist_dropdown.get()
         self.add_to_watchlist_button = Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION)
         self.add_to_watchlist_button.grid(row=0, column=1, sticky="")
-        #ctk.CTkButton(add_to_watchlist_frame, text="Add to Watchlist", text_font=FONT_BUTTON, command=lambda: print("Add to Watchlist")).grid(row=0, column=1, sticky="")
 
-        """
-        def add_to_watchlist(self):
-            if value == "Select an option": # if the user did not select an option, return False
-                print("Pleasee select an option")
-            elif value == "Plan to watch":
-                print(value)
-                db.add_to_watchlist(value, self.drama_id)
-            elif value == "Currently watching":
-                print(value)
-            elif value == "Completed":
-                print(value)
-            elif value == "On hold":
-                print(value)
-            elif value == "Dropped":
-                print(value)
-            else:
-                print("Invaild option selected")
-        """
-
-
-        
 
 class footer(ctk.CTkFrame):
     def __init__(self, master=None, *args, **kwargs):

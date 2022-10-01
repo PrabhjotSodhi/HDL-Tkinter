@@ -5,11 +5,13 @@ from backend.tmdb import TMDB
 import tkinter as tk
 from tkinter import messagebox
 from backend.encryption import PasswordDatabase
+import ctypes
 
 ctk.set_appearance_mode('dark')
 db = PasswordDatabase()
 tmdb = TMDB()
 #ctk.deactivate_automatic_dpi_awareness()
+ctypes.windll.shcore.SetProcessDpiAwareness(0)
 
 class App(ctk.CTk):
     def __init__(self):
@@ -165,27 +167,18 @@ class HomeScreen(ctk.CTkFrame):
         search.grid(row=0, column=0, sticky="nws")
         w.Button(search_frame, text="Search", width=96, height=48, text_font=w.FONT_BUTTON, command=lambda: self.search_drama(search, drama_card_frame)).grid(row=0, column=1)
 
-        #ctk.CTkButton(content_frame, text="Sign In", command=lambda: parent.show_screen(SignupScreen)).grid(pady=0,padx=0)
         drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=366, height=168*1.5, corner_radius=0)
         drama_card_frame.grid(row=2, sticky="nws")
 
         w.Button(content_frame, text="View current watchlist", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=3,pady=(64,0))
 
         w.footer(content_frame).grid(row=4, sticky="", pady=(0,0))
-        #signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
-        #signup_frame.grid(sticky="", pady=(87,28))
-
-        #ctk.CTkLabel(signup_frame, text="Designed & Built by", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        #ctk.CTkButton(signup_frame, text="Prabhjot Sodhi", text_font=w.FONT_INPUT, text_color="#48BB78", fg_color="#212121", hover_color="#212121", width=30, command=).grid(row=0, column=1,pady=0,padx=0)
 
     def search_drama(self, search, parent_frame):
         print(search.get())
         result = tmdb.search_drama(search.get())
-        try:
-            for widgets in parent_frame.winfo_children():
-                widgets.destroy()
-        except:
-            pass
+        for widgets in parent_frame.winfo_children():
+            widgets.destroy()
         drama_card = w.DramaCard(parent_frame, cover_url=result["poster_path"], title=result["name"], year=result["year"], description=result["description"], genres=result["genres"])
         drama_card.add_to_watchlist_button.configure(command=lambda: db.add_to_watchlist(drama_card.watchlist_dropdown.get(), result["id"]))
         drama_card.grid(sticky="news")
