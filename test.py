@@ -1,26 +1,28 @@
-import tkinter as tk
-import customtkinter as ctk
-from PIL import Image, ImageTk
-import urllib.request
-from io import BytesIO
+categories = {
+    'a': [1,1,2,3,4],
+    'b':[1,1,2,3,4,5,6],
+    'c':[1,1,2],
+    'd':[1,1,1,1,1,1,1,4]
+}
 
+categories2 = {
+    'plan_to_watch': [129760, 157383, 157383, 157383, 157383, 157383, 157383, 157383, 157383, 157383, 93405, 93405, 93405, 93405, 93405, 93405, 93405, 93405, 93405, 93405],
+    'currently_watching': [93405],
+    'completed': [93405, 93405],
+    'on_hold': [],
+    'dropped': [93405]
+}
 
-root = ctk.CTk()
-root.geometry('450x576')
-root.configure(bg='#212121')
+for category in categories:
+    for id in categories[category]:
+        if id == 1:
+            while 1 in categories[category]:
+                categories[category].remove(id)
+print(categories)
 
-class DramaCard(ctk.CTkFrame):
-    def __init__(self, master=None, cover_url="https://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", title=None, year=None, description=None, genres=None, *args, **kwargs):
-        ctk.CTkFrame.__init__(self, master, width=366, height=168, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
-        self.image = []
-        self.raw_cover = urllib.request.urlopen(cover_url).read()
-        self.cover_img = ImageTk.PhotoImage(Image.open(BytesIO(self.raw_cover)).resize((112, 168)))
-        label1 = ctk.CTkLabel(self, image=self.cover_img)
-        label1.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-        self.image.append(label1)
-
-
-my_drama_card = DramaCard(root, cover_url="https://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg")
-my_drama_card.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
-
-root.mainloop()
+for category in categories2:
+    for id in categories2[category]:
+        if id == 93405:
+            while 93405 in categories2[category]:
+                categories2[category].remove(id)
+print(categories2)

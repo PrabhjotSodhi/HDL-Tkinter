@@ -36,7 +36,7 @@ class PasswordDatabase:
         return self.data[user] # Use successfully registered
         
     def login(self, user, password):
-        print(self.data)
+        #print(self.data)
         if user not in self.data: # if the user does not exist in the database, return False
             return "User does not exist"
         pwd_bytes = password.encode('utf-8')
@@ -54,10 +54,16 @@ class PasswordDatabase:
     def add_to_watchlist(self, value, drama_id):
         with open('encrypted_dict.json', 'rb') as f: # save the dictionary to the file
             data = pickle.load(f)
-        if value == "Select an option": # if the user did not select an option, return False
-            print("Value did not update!")
-            return False
-        elif value == "Plan to watch":
+        
+        print(data[self.user][2])
+        for category in data[self.user][2]:
+            for id in data[self.user][2][category]:
+                if drama_id == id:
+                    while drama_id in data[self.user][2][category]:
+                        data[self.user][2][category].remove(id)
+        print(data[self.user][2])
+
+        if value == "Plan to watch":
             data[self.user][2]["plan_to_watch"].append(drama_id) # add the title to the plan to watch list
         elif value == "Currently watching":
             data[self.user][2]["currently_watching"].append(drama_id)

@@ -180,10 +180,19 @@ class HomeScreen(ctk.CTkFrame):
         for widgets in parent_frame.winfo_children():
             widgets.destroy()
         drama_card = w.DramaCard(parent_frame, cover_url=result["poster_path"], title=result["name"], year=result["year"], description=result["description"], genres=result["genres"])
-        drama_card.add_to_watchlist_button.configure(command=lambda: db.add_to_watchlist(drama_card.watchlist_dropdown.get(), result["id"]))
+        drama_card.add_to_watchlist_button.configure(command=lambda: self.check_dropdown(drama_card.watchlist_dropdown.get(), result["id"]))
         drama_card.grid(sticky="news")
+    
+    def check_dropdown(self, dropdown, id):
+        options = ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
+        if dropdown == "Select an option":
+            messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
+        elif dropdown not in options:
+            messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
+        else:
+            db.add_to_watchlist(dropdown, id)
 
-            
+
 
 class WatchListScreen(ctk.CTkFrame):
     def __init__(self, parent):
