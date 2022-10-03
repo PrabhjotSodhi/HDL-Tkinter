@@ -55,15 +55,18 @@ class PasswordDatabase:
         with open('encrypted_dict.json', 'rb') as f: # save the dictionary to the file
             data = pickle.load(f)
         
+        options = ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
         print(data[self.user][2])
         for category in data[self.user][2]:
             for id in data[self.user][2][category]:
-                if drama_id == id:
+                if drama_id == id and value in options:
                     while drama_id in data[self.user][2][category]:
                         data[self.user][2][category].remove(id)
         print(data[self.user][2])
 
-        if value == "Plan to watch":
+        if value == "Select an option":
+            return False
+        elif value == "Plan to watch":
             data[self.user][2]["plan_to_watch"].append(drama_id) # add the title to the plan to watch list
         elif value == "Currently watching":
             data[self.user][2]["currently_watching"].append(drama_id)

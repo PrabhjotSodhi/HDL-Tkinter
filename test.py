@@ -13,16 +13,5 @@ categories2 = {
     'dropped': [93405]
 }
 
-for category in categories:
-    for id in categories[category]:
-        if id == 1:
-            while 1 in categories[category]:
-                categories[category].remove(id)
-print(categories)
-
-for category in categories2:
-    for id in categories2[category]:
-        if id == 93405:
-            while 93405 in categories2[category]:
-                categories2[category].remove(id)
-print(categories2)
+print(sum(len(i) for i in categories2.values()))
+# 24

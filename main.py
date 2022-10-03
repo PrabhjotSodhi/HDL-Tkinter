@@ -184,13 +184,10 @@ class HomeScreen(ctk.CTkFrame):
         drama_card.grid(sticky="news")
     
     def check_dropdown(self, dropdown, id):
-        options = ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
-        if dropdown == "Select an option":
+        result = db.add_to_watchlist(dropdown, id)
+        if not result:
             messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
-        elif dropdown not in options:
-            messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
-        else:
-            db.add_to_watchlist(dropdown, id)
+
 
 
 
