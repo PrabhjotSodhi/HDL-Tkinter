@@ -190,15 +190,22 @@ class WatchListScreen(ctk.CTkFrame):
         super().__init__(parent)
 
         self.configure(fg_color="#212121")
-        content_frame = ctk.CTkFrame(self, fg_color="#212121")
-        content_frame.grid(row=0, column=0, sticky="")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
+
+        content_frame = ctk.CTkFrame(self, fg_color="#212121")
+        content_frame.grid(row=0, column=0, sticky="")
         content_frame.grid_columnconfigure(0, weight=1)
         content_frame.grid_rowconfigure(0, weight=1)
+        content_frame.grid_propagate(False)
 
-        ctk.CTkLabel(content_frame, text="Welcome Back", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(sticky="nws", pady=(29,60))
+        ctk.CTkLabel(content_frame, text="My Watchlist", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(sticky="nws", pady=(0,8))
 
+        watchlist_frame = ctk.CTkFrame(self, fg_color="#333333", height=290, corner_radius=0)
+        watchlist_frame.grid(row=1, sticky="nws", pady=(0,0))
+        watchlist_frame.grid_columnconfigure(0, weight=1)
+        watchlist_frame.grid_rowconfigure(0, weight=1)
+        watchlist_frame.grid_propagate(False)
 
 if __name__ == '__main__':
     app = App()

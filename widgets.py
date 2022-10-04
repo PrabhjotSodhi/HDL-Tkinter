@@ -26,6 +26,25 @@ FONT_DESCRIPTION = ('Poppins', 7, 'normal')
 FONT_BUTTON = ('Poppins', 15, 'normal')
 
 
+class ScrollableFrame(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+
+        self.canvas = tk.Canvas(self, bg='#212121')
+        self.scrollbar = tk.Scrollbar(self, orient='vertical', command=self.canvas.yview)
+        self.scrollable_frame = tk.Frame(self.canvas, bg='#212121')
+
+        self.scrollable_frame.bind('<Configure>', lambda e: self.canvas.configure(scrollregion=self.canvas.bbox('all')))
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor='nw')
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.canvas.grid(row=0, column=0, sticky="news")
+        self.scrollbar.grid(row=0, column=1, sticky='ns')
+
+
+
+
 class WrappingLabel(ctk.CTkLabel):
     '''a type of Label that automatically adjusts the wrap to the size'''
     # https://stackoverflow.com/questions/62485520/how-to-wrap-the-text-in-a-tkinter-label-dynamically
