@@ -48,10 +48,10 @@ class InputBox(ctk.CTkEntry):
 
 class DramaCard(ctk.CTkFrame):
     def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, drama_id=None, *args, **kwargs):
-        ctk.CTkFrame.__init__(self, master, width=366, height=168*1.5, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
+        ctk.CTkFrame.__init__(self, master, width=366, height=168*1.25, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
         self.grid_propagate(False)
 
-        self.cover_frame = ctk.CTkFrame(self, width=112, height=168*1.5, fg_color="#333333")
+        self.cover_frame = ctk.CTkFrame(self, width=112, height=168*1.25, fg_color="#333333")
         self.cover_frame.grid(row=0, column=0)
         self.cover_frame.grid_propagate(False)
 
@@ -76,7 +76,7 @@ class DramaCard(ctk.CTkFrame):
     def initialize_cover(self, cover_url=None):
         raw_cover = urllib.request.urlopen(cover_url).read()
         img = Image.open(BytesIO(raw_cover))
-        baseheight = 252
+        baseheight = 210
         hpercent = (baseheight / float(img.size[1]))
         wsize = int((float(img.size[0]) * float(hpercent)))
         self.cover_img = ImageTk.PhotoImage(img.resize((wsize, baseheight), Image.ANTIALIAS))
@@ -97,7 +97,7 @@ class DramaCard(ctk.CTkFrame):
         add_to_watchlist_frame.grid(row=5, column=0, sticky="nw")
         add_to_watchlist_frame.grid_propagate(False)
         self.watchlist_dropdown = ctk.CTkComboBox(add_to_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], width=136, height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
-        self.watchlist_dropdown.grid(row=0, column=0, sticky="")
+        self.watchlist_dropdown.grid(row=0, column=0, sticky="nw")
         self.watchlist_dropdown.set("Select an option")  # set initial value
         self.value = self.watchlist_dropdown.get()
         self.add_to_watchlist_button = Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION)

@@ -150,29 +150,30 @@ class HomeScreen(ctk.CTkFrame):
         super().__init__(parent)
 
         self.configure(fg_color="#212121")
-        content_frame = ctk.CTkFrame(self, fg_color="#212121", width=366, height=512, corner_radius=0)
-        content_frame.grid(row=0, column=0, sticky="", pady=(0,0))
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
+
+        content_frame = ctk.CTkFrame(self, fg_color="#212121", width=366, height=512, corner_radius=0)
+        content_frame.grid(row=0, column=0, sticky="", pady=(0,0))
         content_frame.grid_columnconfigure(0, weight=1)
         content_frame.grid_rowconfigure(0, weight=1)
         content_frame.grid_propagate(False)
         
         self.title = ctk.CTkLabel(content_frame, text="Search Drama", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w")
-        self.title.grid(row=0, sticky="nws", pady=(5,14))
+        self.title.grid(row=1, sticky="nws", pady=(0,8))
 
         search_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
-        search_frame.grid(row=1, sticky="nws", pady=(0,14.5))
+        search_frame.grid(row=2, sticky="nws", pady=(0,0))
         search = w.InputBox(search_frame, placeholder_text="Search for a drama...", width=264, height=48)
-        search.grid(row=0, column=0, sticky="nws")
-        w.Button(search_frame, text="Search", width=96, height=48, text_font=w.FONT_BUTTON, command=lambda: self.search_drama(search, drama_card_frame)).grid(row=0, column=1)
+        search.grid(row=0, column=0, sticky="nws", padx=(0,10))
+        w.Button(search_frame, text="Search", width=96, height=48, text_font=w.FONT_BUTTON, command=lambda: self.search_drama(search, drama_card_frame)).grid(row=0, column=1, sticky="nes")
 
-        drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=366, height=168*1.5, corner_radius=0)
-        drama_card_frame.grid(row=2, sticky="nws")
+        drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=366, height=168*1.25, corner_radius=0)
+        drama_card_frame.grid(row=3, sticky="nws", pady=(14,0))
 
-        w.Button(content_frame, text="View current watchlist", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=3,pady=(64,0))
+        w.Button(content_frame, text="View current watchlist", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=4,pady=(32,0))
 
-        w.footer(content_frame).grid(row=4, sticky="", pady=(0,0))
+        w.footer(content_frame).grid(row=5, sticky="", pady=(0,0))
 
     def search_drama(self, search, parent_frame):
         print(search.get())
@@ -180,14 +181,14 @@ class HomeScreen(ctk.CTkFrame):
         for widgets in parent_frame.winfo_children():
             widgets.destroy()
         drama_card = w.DramaCard(parent_frame, cover_url=result["poster_path"], title=result["name"], year=result["year"], description=result["description"], genres=result["genres"])
-        drama_card.add_to_watchlist_button.configure(command=lambda: self.check_dropdown(drama_card.watchlist_dropdown.get(), result["id"], drama_card))
+        drama_card.add_to_watchlist_button.configure(command=lambda: self.check_dropdown(drama_card.watchlist_dropdown.get(), result))
         drama_card.grid(sticky="news")
     
-    def check_dropdown(self, dropdown, id, drama_card):
-        result = db.add_to_watchlist(dropdown, id)
-        if result:
-            drama_card.success_label.configure(text="Successfully added to watchlist!")
-        elif not result:
+    def check_dropdown(self, dropdown, result):
+        add_to_watchlist = db.add_to_watchlist(dropdown, result["id"])
+        if add_to_watchlist:
+            messagebox.showinfo("Successfully added to watchlist!",f"{result['name']} has been added to your watchlist")
+        elif not add_to_watchlist:
             messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
 
 
