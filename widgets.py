@@ -102,6 +102,8 @@ class DramaCard(ctk.CTkFrame):
         self.value = self.watchlist_dropdown.get()
         self.add_to_watchlist_button = Button(add_to_watchlist_frame, text='Add to Watchlist', width=80, height=24, text_font=FONT_DESCRIPTION)
         self.add_to_watchlist_button.grid(row=0, column=1, sticky="")
+        self.success_label = ctk.CTkLabel(add_to_watchlist_frame, text="", text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w")
+        self.success_label.grid(row=1, column=0, sticky="nw")
 
 
 class footer(ctk.CTkFrame):

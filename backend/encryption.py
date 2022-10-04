@@ -81,6 +81,7 @@ class PasswordDatabase:
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
             print(data[self.user])
             pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
+        return True
 
 
 '''
