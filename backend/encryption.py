@@ -22,7 +22,7 @@ class PasswordDatabase:
         except: # if file does not exist or is empty, create new dictionary
             self.data = {}
 
-    def register(self, nickname, user, password):
+    def register(self, nickname=None, user=None, password=None):
         if user in self.data: # if the user already exists in the database, return False
             print("nidnaidniwand")
             return "User already exists"

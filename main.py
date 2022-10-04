@@ -52,6 +52,7 @@ class LoginScreen(ctk.CTkFrame):
         self.configure(fg_color="#212121")
         content_frame = ctk.CTkFrame(self, fg_color="#212121")
         content_frame.grid(row=0, column=0, sticky="")
+
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
         content_frame.grid_columnconfigure(0, weight=1)
@@ -59,9 +60,8 @@ class LoginScreen(ctk.CTkFrame):
 
         ctk.CTkLabel(content_frame, text="Welcome Back", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(sticky="nws", pady=(29,60))
 
-
-        ctk.CTkLabel(content_frame, text="Email", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        username = w.InputBox(content_frame, placeholder_text="Enter your email", width=366, height=48)
+        ctk.CTkLabel(content_frame, text="Username", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
+        username = w.InputBox(content_frame, placeholder_text="Enter your username", width=366, height=48)
         username.grid(pady=(0,27))
 
         ctk.CTkLabel(content_frame, text="Password", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
@@ -103,24 +103,17 @@ class SignupScreen(ctk.CTkFrame):
         content_frame.grid_columnconfigure(0, weight=1)
         content_frame.grid_rowconfigure(0, weight=1)
 
-        entry_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
-        entry_frame.grid(row=1, column=0, sticky="")
+        ctk.CTkLabel(content_frame, text="Create an account", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(sticky="nws", pady=(29,60))
 
-        ctk.CTkLabel(content_frame, text="Create an account", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, sticky="nws", pady=(29,0))
+        ctk.CTkLabel(content_frame, text="Username", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
+        username = w.InputBox(content_frame, placeholder_text="Create a username", width=366, height=48)
+        username.grid(pady=(0,27))
 
-        ctk.CTkLabel(entry_frame, text="Nickname", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        nickname = w.InputBox(entry_frame, placeholder_text="What should we call you?", width=366, height=48)
-        nickname.grid()
+        ctk.CTkLabel(content_frame, text="Password", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
+        password = w.InputBox(content_frame, placeholder_text="Create a password ", width=366, height=48, show="*")
+        password.grid(pady=(0,27))
 
-        ctk.CTkLabel(entry_frame, text="Email", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        username = w.InputBox(entry_frame, placeholder_text="Enter your email", width=366, height=48)
-        username.grid()
-
-        ctk.CTkLabel(entry_frame, text="Password", text_font=w.FONT_INPUT, text_color="#FFFFFF", anchor="w").grid(sticky="nws")
-        password = w.InputBox(entry_frame, placeholder_text="Enter your password", width=366, height=48, show="*")
-        password.grid()
-
-        w.Button(content_frame, text="Sign Up", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_up(parent, nickname, username, password)).grid(pady=(27,0))
+        w.Button(content_frame, text="Sign Up", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_up(parent, nickname, username, password)).grid()
 
         signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
         signup_frame.grid(sticky="", pady=(87,28))
@@ -190,8 +183,6 @@ class HomeScreen(ctk.CTkFrame):
             messagebox.showinfo("Successfully added to watchlist!",f"{result['name']} has been added to your watchlist")
         elif not add_to_watchlist:
             messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
-
-
 
 
 class WatchListScreen(ctk.CTkFrame):
