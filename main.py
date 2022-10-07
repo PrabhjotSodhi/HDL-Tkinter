@@ -3,6 +3,7 @@ import customtkinter as ctk
 import widgets as w
 from backend.tmdb import TMDB
 import tkinter as tk
+from tkinter import PhotoImage
 from tkinter import messagebox
 from backend.encryption import PasswordDatabase
 import ctypes
@@ -202,7 +203,7 @@ class WatchListScreen(ctk.CTkFrame):
         title_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=242, height=48, corner_radius=0)
         title_frame.grid(row=1, column=0, sticky="nws", pady=(0,8))
         ctk.CTkLabel(title_frame, text="My Watchlist", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, column=0, sticky="nws")
-        ctk.CTkButton(title_frame, text="Reload", fg_color="#48BB78",hover_color="#38A169",text_color="#FFFFFF", width=48, height=24, corner_radius=0, command=lambda: self.update_watchlist(self.drama_category_frames)).grid(row=0, column=1, sticky="nesw")
+        ctk.CTkButton(title_frame, image=PhotoImage(file='./reload.png'), text="", fg_color="#212121",hover_color="#212121", width=48, height=24, corner_radius=0, command=lambda: self.update_watchlist(self.drama_category_frames)).grid(row=0, column=1, sticky="nesw", padx=(0  ,0))
 
         # Categories in watchlist_frame
         watchlist_frame = w.ScrollableFrame(content_frame, "vertical")
@@ -215,7 +216,7 @@ class WatchListScreen(ctk.CTkFrame):
             ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, text_color="#FFFFFF", bg_color="#212121", anchor="w").grid(row=title_index[i], sticky="nws", pady=(0,0))
             drama_category_frame = w.ScrollableFrame(watchlist_frame.scrollable_frame, "horizontal")
             #drama_category_frame.update_watchlist_button.configure(command=lambda: self.check_dropdown(drama_card.watchlist_dropdown.get(), result))
-            drama_category_frame.grid(row=drama_index[i], sticky="nws", pady=(10,10))
+            drama_category_frame.grid(row=drama_index[i], sticky="nws", pady=(0,0))
             self.drama_category_frames.append(drama_category_frame)
 
         # Footer

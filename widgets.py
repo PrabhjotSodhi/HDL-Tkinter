@@ -140,10 +140,10 @@ class DramaCard(ctk.CTkFrame):
 
 class WatchlistDramaCard(ctk.CTkFrame):
     def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, drama_id=None, *args, **kwargs):
-        ctk.CTkFrame.__init__(self, master, width=366, height=210, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
+        ctk.CTkFrame.__init__(self, master, width=366, height=230, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
         self.grid_propagate(False)
 
-        self.cover_frame = ctk.CTkFrame(self, width=112, height=210, fg_color="#333333")
+        self.cover_frame = ctk.CTkFrame(self, width=112, height=230, fg_color="#333333")
         self.cover_frame.grid(row=0, column=0)
         self.cover_frame.grid_propagate(False)
 
@@ -168,7 +168,7 @@ class WatchlistDramaCard(ctk.CTkFrame):
     def initialize_cover(self, cover_url=None):
         raw_cover = urllib.request.urlopen(cover_url).read()
         img = Image.open(BytesIO(raw_cover))
-        baseheight = 210
+        baseheight = 230
         hpercent = (baseheight / float(img.size[1]))
         wsize = int((float(img.size[0]) * float(hpercent)))
         self.cover_img = ImageTk.PhotoImage(img.resize((wsize, baseheight), Image.ANTIALIAS))
@@ -190,13 +190,13 @@ class WatchlistDramaCard(ctk.CTkFrame):
         update_watchlist_frame.grid_propagate(False)
 
         self.watchlist_dropdown = ctk.CTkComboBox(update_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
-        self.watchlist_dropdown.grid(row=0, column=0, columnspan=2, sticky="news") # <-- Iteration two: add 'news' sticky
+        self.watchlist_dropdown.grid(row=0, column=0, columnspan=2, sticky="news")
         self.watchlist_dropdown.set("Select an option")  # set initial value
         self.value = self.watchlist_dropdown.get()
 
         self.update_watchlist_button = Button(update_watchlist_frame, text='Update', width=80, height=24, text_font=FONT_DESCRIPTION)
-        self.update_watchlist_button.grid(row=1, column=0, sticky="", padx=(0,10))
-        self.delete_watchlist_button = ctk.CTkButton(update_watchlist_frame, text='Delete', width=80, height=24, text_font=FONT_DESCRIPTION, fg_color="red", hover_color="#38A169", text_color="#FFFFFF", corner_radius=0)
+        self.update_watchlist_button.grid(row=1, column=0, sticky="", padx=(0,0))
+        self.delete_watchlist_button = ctk.CTkButton(update_watchlist_frame, image=ImageTk.PhotoImage(file='./remove.png'), text='', width=80, height=24, text_font=FONT_DESCRIPTION, fg_color="#333333", hover_color="#333333", text_color="#FFFFFF", corner_radius=0)
         self.delete_watchlist_button.grid(row=1, column=1, sticky="")
 
 class footer(ctk.CTkFrame):
