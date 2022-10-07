@@ -82,6 +82,14 @@ class PasswordDatabase:
             print(data[self.user])
             pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
         return True
+    def get_dramas(self, category):
+        with open('encrypted_dict.json', 'rb') as f:
+            data = pickle.load(f)
+        try:
+            user = self.user
+            return data[user][2][category]
+        except:
+            return False
 
 '''
 db = PasswordDatabase()

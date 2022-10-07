@@ -20,6 +20,7 @@ root.configure(bg='#212121')
 # CONSTANTS
 FONT_INPUT = ('Poppins', 15, 'normal')
 FONT_TITLE = ('Poppins', 27, 'bold')
+FONT_CATEGORY_TITLE = ('Poppins', 24, 'bold')
 FONT_DRAMA_TITLE = ('Poppins', 15, 'bold')
 FONT_SUBTITLE = ('Poppins', 9, 'bold')
 FONT_DESCRIPTION = ('Poppins', 7, 'normal')
@@ -37,7 +38,7 @@ class ScrollableFrame(tk.Frame):
 
         self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self.canvas.yview, fg_color='#202020',scrollbar_color='#303030', scrollbar_hover_color='#404040', width=30, corner_radius=10)
 
-        self.scrollable_frame = tk.Frame(self.canvas)
+        self.scrollable_frame = tk.Frame(self.canvas, bg="#212121")
 
         self.scrollable_frame.bind("<Configure>", lambda *args, **kwargs: self.canvas.configure(
             scrollregion=self.canvas.bbox("all")))

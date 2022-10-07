@@ -203,24 +203,16 @@ class WatchListScreen(ctk.CTkFrame):
         #watchlist_scrollbar = ctk.CTkScrollbar(content_frame, orientation="vertical", command=watchlist_frame.yview)
         #watchlist_scrollbar.grid(row=3, column=1, sticky="ns")
         #watchlist_frame.configure(yscrollcommand=watchlist_scrollbar.set)
-        watchlist_frame = w.ScrollableFrame(content_frame, width=366, height=290, bg="red")
+        watchlist_frame = w.ScrollableFrame(content_frame, width=366, height=290, bg="#212121")
         watchlist_frame.grid(row=3, column=0, sticky="nws")
 
         # Categories in watchlist_frame
-        """
         categories= ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
         for i, category in enumerate(categories):
-            ctk.CTkLabel(watchlist_frame, text=category, text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=i, sticky="nws", pady=(0,0))
-            drama_card_frame = ctk.CTkFrame(watchlist_frame, fg_color="#212121", width=366, height=168*1.25, corner_radius=0)
-            drama_card_frame.grid(row=i+1, sticky="nws", pady=(0,0))
-            drama_card_frame.grid_columnconfigure(0, weight=1)
-            drama_card_frame.grid_rowconfigure(0, weight=1)
-            drama_card_frame.grid_propagate(False)
-            dramas = db.get_dramas(category)
-        """
+            ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, text_color="#FFFFFF", bg_color='#212121', anchor="w").grid(row=i, sticky="nws", pady=(10,0))
 
-        for i in range(8):
-            ctk.CTkLabel(watchlist_frame.scrollable_frame, fg_color='#404040', bg_color='#202020', text=f"Line {i + 1}", text_font=w.FONT_DRAMA_TITLE).grid(row=i,pady=(10, 0))
+        #for i in range(8):
+        #    ctk.CTkLabel(watchlist_frame.scrollable_frame, fg_color='#404040', bg_color='#202020', text=f"Line {i + 1}", text_font=w.FONT_DRAMA_TITLE).grid(row=i,pady=(10, 0))
 
         # Footer
         w.Button(content_frame, text="Search Drama", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.HomeScreen)).grid(row=4,pady=(22,0))
