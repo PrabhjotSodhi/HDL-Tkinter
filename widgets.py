@@ -5,6 +5,8 @@ from PIL import Image, ImageTk
 import urllib.request
 from io import BytesIO
 import webbrowser
+
+from requests import delete
 from backend.encryption import PasswordDatabase
 
 db = PasswordDatabase()
@@ -33,7 +35,7 @@ class ScrollableFrame(tk.Frame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         if orientation == 'vertical': self.canvas = tk.Canvas(self, width=366, height=290)
-        elif orientation == 'horizontal': self.canvas = tk.Canvas(self, width=366, height=110)
+        elif orientation == 'horizontal': self.canvas = tk.Canvas(self, width=366, height=210)
         #self.canvas = tk.Canvas(self, width=346, height=290, bg='#212121', bd=0, highlightthickness=0, relief='ridge') # <-- Iteration two
         self.scrollable_frame = tk.Frame(self.canvas)
         #self.scrollable_frame = tk.Frame(self.canvas, bg="#212121") # <-- Iteration two
@@ -137,6 +139,67 @@ class DramaCard(ctk.CTkFrame):
         self.add_to_watchlist_button.grid(row=0, column=1, sticky="")
         self.success_label = ctk.CTkLabel(add_to_watchlist_frame, text="", text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w")
         self.success_label.grid(row=1, column=0, sticky="nw")
+
+class WatchlistDramaCard(ctk.CTkFrame):
+    def __init__(self, master=None, cover_url=None, title=None, year=None, description=None, genres=None, drama_id=None, *args, **kwargs):
+        ctk.CTkFrame.__init__(self, master, width=366, height=210, bg_color="#333333", fg_color="#333333",corner_radius=0, *args, **kwargs)
+        self.grid_propagate(False)
+
+        self.cover_frame = ctk.CTkFrame(self, width=112, height=210, fg_color="#333333")
+        self.cover_frame.grid(row=0, column=0)
+        self.cover_frame.grid_propagate(False)
+
+        drama_frame = ctk.CTkFrame(self, fg_color="#333333")
+        drama_frame.grid(row=0, column=1, columnspan=2, sticky="news")
+        drama_frame.grid_propagate(False)
+        drama_frame.grid_rowconfigure(0, weight=1)
+        drama_frame.grid_columnconfigure(0, weight=1)
+        self.columnconfigure(0, weight=0)
+        self.columnconfigure(1, weight=1)
+
+        self.content_frame = ctk.CTkFrame(drama_frame, width=229, height=136, fg_color="#333333")
+        self.content_frame.grid(row=0, column=0, sticky="ns")
+        self.content_frame.grid_propagate(False)
+
+        self.drama_id = drama_id
+
+        self.initialize_cover(cover_url)
+        self.initialize_content(title, year, description, genres)
+        self.initialize_update_watchlist()
+
+    def initialize_cover(self, cover_url=None):
+        raw_cover = urllib.request.urlopen(cover_url).read()
+        img = Image.open(BytesIO(raw_cover))
+        baseheight = 210
+        hpercent = (baseheight / float(img.size[1]))
+        wsize = int((float(img.size[0]) * float(hpercent)))
+        self.cover_img = ImageTk.PhotoImage(img.resize((wsize, baseheight), Image.ANTIALIAS))
+        cover = ctk.CTkLabel(self.cover_frame, image=self.cover_img)
+        cover.grid(row=0, column=0, sticky="news")
+
+    def initialize_content(self, title=None, year="YYYY", description=None, genres=None):
+        ctk.CTkLabel(self.content_frame, text=f"{title}({year})", text_font=FONT_DRAMA_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, column=0, sticky="nw")
+
+        ctk.CTkLabel(self.content_frame, text="Description", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=1, column=0, sticky="nw")
+        ctk.CTkLabel(self.content_frame, text=description, text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w", justify="left", wraplength=300).grid(row=2, column=0, sticky="n")
+        
+        ctk.CTkLabel(self.content_frame, text="Genres", text_font=FONT_SUBTITLE, text_color="#FFFFFF", anchor="w").grid(row=3, column=0, sticky="nw")
+        ctk.CTkLabel(self.content_frame, text=str(genres), text_font=FONT_DESCRIPTION, text_color="#FFFFFF", anchor="w").grid(row=4, column=0, sticky="nw")
+
+    def initialize_update_watchlist(self):
+        update_watchlist_frame = ctk.CTkFrame(self.content_frame, fg_color="#333333", bg_color="#333333")
+        update_watchlist_frame.grid(row=5, column=0, sticky="nw")
+        update_watchlist_frame.grid_propagate(False)
+
+        self.watchlist_dropdown = ctk.CTkComboBox(update_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
+        self.watchlist_dropdown.grid(row=0, column=0, columnspan=2, sticky="nw") # <-- Iteration two: add 'news' sticky
+        self.watchlist_dropdown.set("Select an option")  # set initial value
+        self.value = self.watchlist_dropdown.get()
+
+        self.update_watchlist_button = Button(update_watchlist_frame, text='Update', width=80, height=24, text_font=FONT_DESCRIPTION)
+        self.update_watchlist_button.grid(row=1, column=0, sticky="")
+        self.delete_watchlist_button = ctk.CTkButton(update_watchlist_frame, text='Delete', width=80, height=24, text_font=FONT_DESCRIPTION, fg_color="red", hover_color="#38A169", text_color="#FFFFFF", corner_radius=0)
+        self.delete_watchlist_button.grid(row=1, column=1, sticky="")
 
 class footer(ctk.CTkFrame):
     def __init__(self, master=None, *args, **kwargs):

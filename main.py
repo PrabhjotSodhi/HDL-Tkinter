@@ -123,9 +123,9 @@ class SignupScreen(ctk.CTkFrame):
 
         parent.bind('<Return>', lambda e: self.sign_in(parent, username, password))
 
-    def sign_up(self, parent, nickname, username, password):
-        self.user_data = db.register(str(nickname.get()), str(username.get()), str(password.get()))
-        print(f"nickname:{nickname.get()}, username:{username.get()}, password:{password.get()}, {self.user_data}")
+    def sign_up(self, parent, username, password):
+        self.user_data = db.register(user=str(username.get()), password=str(password.get()))
+        print(f"nickname:, username:{username.get()}, password:{password.get()}, {self.user_data}")
         if self.user_data == "User already exists":
             print("hahahah")
             messagebox.showwarning("User already exists","Please go to the sign in")
@@ -197,12 +197,12 @@ class WatchListScreen(ctk.CTkFrame):
         content_frame.grid(row=0, column=0, sticky="")
         content_frame.grid_columnconfigure(0, weight=1)
         content_frame.grid_rowconfigure(0, weight=1)
-        content_frame.grid_propagate(False)
+        content_frame.grid_propagate(False) 
 
         title_frame = ctk.CTkFrame(content_frame, fg_color="#333333", bg_color="#333333", width=242, height=48, corner_radius=0)
         title_frame.grid(row=1, column=0, sticky="nws", pady=(0,8))
         ctk.CTkLabel(title_frame, text="My Watchlist", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, column=0, sticky="nws")
-        ctk.CTkButton(title_frame, text="", bg_color="#333333", fg_color="#333333", command=lambda: self.update_watchlist(self.drama_category_frames)).grid(row=0, column=1, sticky="nes")
+        ctk.CTkButton(title_frame, text="Reload", bg_color="#333333", fg_color="#333333", command=lambda: self.update_watchlist(self.drama_category_frames)).grid(row=0, column=1, sticky="nes")
 
         # Categories in watchlist_frame
         watchlist_frame = w.ScrollableFrame(content_frame, "vertical")
@@ -212,10 +212,9 @@ class WatchListScreen(ctk.CTkFrame):
         for i, category in enumerate(self.categories):
             title_index = [0,2,4,6,8]
             drama_index = [1,3,5,7,9]
-            ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, fg_color="#404040", bg_color="#202020", anchor="w").grid(row=title_index[i], sticky="nws", pady=(10,0))
+            ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, fg_color="#404040", bg_color="#202020", anchor="w").grid(row=title_index[i], sticky="nws", pady=(0,0))
             drama_category_frame = w.ScrollableFrame(watchlist_frame.scrollable_frame, "horizontal")
-            drama_category_frame.grid(row=drama_index[i], sticky="nws", pady=(0,0))
-            ctk.CTkLabel(drama_category_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, fg_color="#404040", bg_color="#202020", anchor="w").grid(row=title_index[i], sticky="nws", pady=(10,0))
+            drama_category_frame.grid(row=drama_index[i], sticky="nws", pady=(10,10))
             self.drama_category_frames.append(drama_category_frame)
         
         #for i, category in enumerate(categories):
@@ -230,12 +229,16 @@ class WatchListScreen(ctk.CTkFrame):
         #watchlist_frame.configure(yscrollcommand=watchlist_scrollbar.set)
     
     def update_watchlist(self, parent_frames):
+        watchlist = db.get_dramas()
+        test_drama = tmdb.search_drama_by_id(129760)
         for frame in parent_frames:
             for widgets in frame.scrollable_frame.winfo_children():
-                print(widgets)
                 widgets.destroy()
-        watchlist = db.get_watchlist()
-        print("update")
+        for category in watchlist:
+            for i, id in enumerate(watchlist[category]):
+                drama = tmdb.search_drama_by_id(id)
+                w.WatchlistDramaCard(parent_frames[i].scrollable_frame, cover_url=drama["poster_path"], title=drama["name"], year=drama["year"], description=drama["description"], genres=drama["genres"]).grid(sticky="news", pady=(0,10))
+        print(watchlist)
 
 if __name__ == '__main__':
     app = App()

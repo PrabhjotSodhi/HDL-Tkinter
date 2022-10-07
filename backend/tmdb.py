@@ -41,3 +41,23 @@ class TMDB:
         #final_json = json.dumps(filter_json)
         #print(filter_json["genres"])
         return filter_json
+
+    def search_drama_by_id(self, id):
+        drama_url = f"https://api.themoviedb.org/3/tv/{id}?api_key={self.api_key}"
+        drama_response = requests.request("GET", drama_url)
+        results = drama_response.json()
+
+        try:
+            genres = ','.join([self.genre_options.get(i) for i in results[0]['genre_ids'] if i is not None])
+        except: #TypeError
+            genres = "Drama"
+
+        filter_json = {
+            "id": results['id'],
+            "name": results['name'],
+            "year": results['first_air_date'][:4],
+            "description": results['overview'],
+            "genres": genres,
+            "poster_path": f"http://image.tmdb.org/t/p/original{results['poster_path']}",
+        }
+        return filter_json
