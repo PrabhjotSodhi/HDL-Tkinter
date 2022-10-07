@@ -213,7 +213,7 @@ class WatchListScreen(ctk.CTkFrame):
         for i, category in enumerate(self.categories):
             title_index = [0,2,4,6,8]
             drama_index = [1,3,5,7,9]
-            ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, text_color="#FFFFFF", bg_color="#212121", anchor="w").grid(row=title_index[i], sticky="nws", pady=(0,0))
+            ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, text_color="#FFFFFF", bg_color="#212121", anchor="w").grid(row=title_index[i], column=i, sticky="nws", pady=(0,0))
             drama_category_frame = w.ScrollableFrame(watchlist_frame.scrollable_frame, "horizontal")
             #drama_category_frame.update_watchlist_button.configure(command=lambda: self.check_dropdown(drama_card.watchlist_dropdown.get(), result))
             drama_category_frame.grid(row=drama_index[i], sticky="nws", pady=(0,0))
@@ -235,14 +235,15 @@ class WatchListScreen(ctk.CTkFrame):
         for index, category in enumerate(watchlist):
             for i, id in enumerate(watchlist[category]):
                 drama = tmdb.search_drama_by_id(id)
-                drama_card = w.WatchlistDramaCard(parent_frames[i].scrollable_frame, cover_url=drama["poster_path"], title=drama["name"], year=drama["year"], description=drama["description"], genres=drama["genres"])
+                print(parent_frames[index])
+                drama_card = w.WatchlistDramaCard(parent_frames[index].scrollable_frame, cover_url=drama["poster_path"], title=drama["name"], year=drama["year"], description=drama["description"], genres=drama["genres"])
                 dropdown_list = self.categories
                 options = ["plan_to_watch","currently_watching","completed","on_hold","dropped"]
                 if category in options:
                     dropdown_list.pop(index)
                 dropdown_list.insert(0,"Select an option")
                 drama_card.watchlist_dropdown.configure(values=dropdown_list)
-                drama_card.grid(sticky="news", pady=(0,10))
+                drama_card.grid(row=0, column=i, sticky="news", pady=(0,10), padx=(0,20))
         print(watchlist)
 
 if __name__ == '__main__':

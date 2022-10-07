@@ -36,7 +36,7 @@ class ScrollableFrame(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
         if orientation == 'vertical': self.canvas = tk.Canvas(self, width=366, height=290, bg='#212121', bd=0, highlightthickness=0, relief='ridge')
         elif orientation == 'horizontal': self.canvas = tk.Canvas(self, width=366, height=230, bg='#212121', bd=0, highlightthickness=0, relief='ridge')
-        self.scrollable_frame = tk.Frame(self.canvas, bg="#212121") # <-- Iteration Three
+        self.scrollable_frame = tk.Frame(self.canvas, bg="#212121")
         self.scrollable_frame.bind("<Configure>", lambda *args, **kwargs: self.canvas.configure(
             scrollregion=self.canvas.bbox("all")))
 
@@ -46,12 +46,12 @@ class ScrollableFrame(tk.Frame):
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
 
         if orientation == 'vertical':
-            self.scrollbar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
-            #self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self.canvas.yview, fg_color='#202020',scrollbar_color='#303030', scrollbar_hover_color='#404040', width=30, corner_radius=10) # <-- Iteration three
+            #self.scrollbar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+            self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self.canvas.yview, fg_color='#202020',scrollbar_color='#303030', scrollbar_hover_color='#404040', width=25, corner_radius=10)
             self.canvas.configure(yscrollcommand=self.scrollbar.set)
             self.scrollbar.grid(row=0, column=1, sticky="nes")
         elif orientation == 'horizontal':
-            self.scrollbar = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
+            self.scrollbar = ctk.CTkScrollbar(self, orientation="horizontal", command=self.canvas.xview, fg_color='#202020',scrollbar_color='#303030', scrollbar_hover_color='#404040', height=20, corner_radius=8)
             self.canvas.configure(xscrollcommand=self.scrollbar.set)
             self.scrollbar.grid(row=1, column=0, sticky="ew")
         self.canvas.grid(row=0, column=0, sticky="news")
@@ -190,7 +190,7 @@ class WatchlistDramaCard(ctk.CTkFrame):
         update_watchlist_frame.grid_propagate(False)
 
         self.watchlist_dropdown = ctk.CTkComboBox(update_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
-        self.watchlist_dropdown.grid(row=0, column=0, columnspan=2, sticky="news")
+        self.watchlist_dropdown.grid(row=0, column=0, columnspan=2, sticky="news", pady=(0,5))
         self.watchlist_dropdown.set("Select an option")  # set initial value
         self.value = self.watchlist_dropdown.get()
 
