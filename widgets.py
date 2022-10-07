@@ -34,11 +34,9 @@ class ScrollableFrame(tk.Frame):
         super().__init__(container, *args, **kwargs)
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        if orientation == 'vertical': self.canvas = tk.Canvas(self, width=366, height=290)
-        elif orientation == 'horizontal': self.canvas = tk.Canvas(self, width=366, height=210)
-        #self.canvas = tk.Canvas(self, width=346, height=290, bg='#212121', bd=0, highlightthickness=0, relief='ridge') # <-- Iteration two
-        self.scrollable_frame = tk.Frame(self.canvas)
-        #self.scrollable_frame = tk.Frame(self.canvas, bg="#212121") # <-- Iteration two
+        if orientation == 'vertical': self.canvas = tk.Canvas(self, width=366, height=290, bg='#212121', bd=0, highlightthickness=0, relief='ridge')
+        elif orientation == 'horizontal': self.canvas = tk.Canvas(self, width=366, height=230, bg='#212121', bd=0, highlightthickness=0, relief='ridge')
+        self.scrollable_frame = tk.Frame(self.canvas, bg="#212121") # <-- Iteration Three
         self.scrollable_frame.bind("<Configure>", lambda *args, **kwargs: self.canvas.configure(
             scrollregion=self.canvas.bbox("all")))
 
@@ -49,7 +47,7 @@ class ScrollableFrame(tk.Frame):
 
         if orientation == 'vertical':
             self.scrollbar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
-            #self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self.canvas.yview, fg_color='#202020',scrollbar_color='#303030', scrollbar_hover_color='#404040', width=30, corner_radius=10) # <-- Iteration two
+            #self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self.canvas.yview, fg_color='#202020',scrollbar_color='#303030', scrollbar_hover_color='#404040', width=30, corner_radius=10) # <-- Iteration three
             self.canvas.configure(yscrollcommand=self.scrollbar.set)
             self.scrollbar.grid(row=0, column=1, sticky="nes")
         elif orientation == 'horizontal':
@@ -192,12 +190,12 @@ class WatchlistDramaCard(ctk.CTkFrame):
         update_watchlist_frame.grid_propagate(False)
 
         self.watchlist_dropdown = ctk.CTkComboBox(update_watchlist_frame, values=["Select an option","Plan to watch","Currently watching","Completed","On hold","Dropped"], height=24, corner_radius=0, border_width=0, border_color="#212121", fg_color="#212121", bg_color="#212121", button_color="212121", button_hover_color="#212121", dropdown_color="#212121", dropdown_hover_color="#212121", text_color="#FFFFFF", text_font=FONT_DESCRIPTION, dropdown_text_font=FONT_DESCRIPTION, hover=False)
-        self.watchlist_dropdown.grid(row=0, column=0, columnspan=2, sticky="nw") # <-- Iteration two: add 'news' sticky
+        self.watchlist_dropdown.grid(row=0, column=0, columnspan=2, sticky="news") # <-- Iteration two: add 'news' sticky
         self.watchlist_dropdown.set("Select an option")  # set initial value
         self.value = self.watchlist_dropdown.get()
 
         self.update_watchlist_button = Button(update_watchlist_frame, text='Update', width=80, height=24, text_font=FONT_DESCRIPTION)
-        self.update_watchlist_button.grid(row=1, column=0, sticky="")
+        self.update_watchlist_button.grid(row=1, column=0, sticky="", padx=(0,10))
         self.delete_watchlist_button = ctk.CTkButton(update_watchlist_frame, text='Delete', width=80, height=24, text_font=FONT_DESCRIPTION, fg_color="red", hover_color="#38A169", text_color="#FFFFFF", corner_radius=0)
         self.delete_watchlist_button.grid(row=1, column=1, sticky="")
 
