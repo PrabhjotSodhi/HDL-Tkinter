@@ -198,25 +198,37 @@ class WatchListScreen(ctk.CTkFrame):
         content_frame.grid_columnconfigure(0, weight=1)
         content_frame.grid_rowconfigure(0, weight=1)
         content_frame.grid_propagate(False)
-        
-        ctk.CTkLabel(content_frame, text="My Watchlist", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=1, sticky="nws", pady=(0,0))
-        #watchlist_scrollbar = ctk.CTkScrollbar(content_frame, orientation="vertical", command=watchlist_frame.yview)
-        #watchlist_scrollbar.grid(row=3, column=1, sticky="ns")
-        #watchlist_frame.configure(yscrollcommand=watchlist_scrollbar.set)
-        watchlist_frame = w.ScrollableFrame(content_frame, width=366, height=290, bg="#212121")
-        watchlist_frame.grid(row=3, column=0, sticky="nws")
+
+        title_frame = ctk.CTkFrame(content_frame, fg_color="#333333", bg_color="#333333", width=242, height=48, corner_radius=0)
+        title_frame.grid(row=1, column=0, sticky="nws", pady=(0,8))
+        ctk.CTkLabel(title_frame, text="My Watchlist", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, column=0, sticky="nws")
+        ctk.CTkButton(title_frame, text="", bg_color="#333333", fg_color="#333333", command=lambda: self.update_watchlist()).grid(row=0, column=1, sticky="nes")
 
         # Categories in watchlist_frame
+        watchlist_frame = w.ScrollableFrame(content_frame, width=366, height=290)
+        watchlist_frame.grid(row=3, column=0, sticky="nws")
         categories= ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
         for i, category in enumerate(categories):
-            ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, text_color="#FFFFFF", bg_color='#212121', anchor="w").grid(row=i, sticky="nws", pady=(10,0))
-
-        #for i in range(8):
-        #    ctk.CTkLabel(watchlist_frame.scrollable_frame, fg_color='#404040', bg_color='#202020', text=f"Line {i + 1}", text_font=w.FONT_DRAMA_TITLE).grid(row=i,pady=(10, 0))
+            title_index = [2,4,6,8,10]
+            drama_index = [1,3,5,7,9]
+            if i == 0:
+                ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, fg_color="#404040", bg_color="#202020", anchor="w").grid(row=0, sticky="nws", pady=(10,0))
+            elif i > 0:
+                ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, fg_color="#404040", bg_color="#202020", anchor="w").grid(row=num, sticky="nws", pady=(10,0))
+        
+        #for i, category in enumerate(categories):
+        #    drama_card = w.DramaCard(watchlist_frame.scrollable_frame, cover_url="https://image.tmdb.org/t/p/w500/6t6r1VGQTTQecN4V0sZeqsmdU9g.jpg", title="The King: Eternal Monarch", year="2020", description="A detective from the Joseon era is transported to present day South Korea where he must solve a series of gruesome murders.", genres=["Fantasy","Romance","Thriller"])
+        #    drama_card.grid(row=i+1, sticky="news", pady=(0,10))
 
         # Footer
         w.Button(content_frame, text="Search Drama", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.HomeScreen)).grid(row=4,pady=(22,0))
         w.footer(content_frame).grid(row=5, sticky="")
+        #watchlist_scrollbar = ctk.CTkScrollbar(content_frame, orientation="vertical", command=watchlist_frame.yview)
+        #watchlist_scrollbar.grid(row=3, column=1, sticky="ns")
+        #watchlist_frame.configure(yscrollcommand=watchlist_scrollbar.set)
+    
+    def update_watchlist(self):
+        print("update")
 
 if __name__ == '__main__':
     app = App()
