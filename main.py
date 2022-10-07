@@ -214,6 +214,7 @@ class WatchListScreen(ctk.CTkFrame):
             drama_index = [1,3,5,7,9]
             ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, fg_color="#404040", bg_color="#202020", anchor="w").grid(row=title_index[i], sticky="nws", pady=(0,0))
             drama_category_frame = w.ScrollableFrame(watchlist_frame.scrollable_frame, "horizontal")
+            #drama_category_frame.update_watchlist_button.configure(command=lambda: self.check_dropdown(drama_card.watchlist_dropdown.get(), result))
             drama_category_frame.grid(row=drama_index[i], sticky="nws", pady=(10,10))
             self.drama_category_frames.append(drama_category_frame)
         
@@ -234,10 +235,17 @@ class WatchListScreen(ctk.CTkFrame):
         for frame in parent_frames:
             for widgets in frame.scrollable_frame.winfo_children():
                 widgets.destroy()
-        for category in watchlist:
+        for index, category in enumerate(watchlist):
             for i, id in enumerate(watchlist[category]):
                 drama = tmdb.search_drama_by_id(id)
-                w.WatchlistDramaCard(parent_frames[i].scrollable_frame, cover_url=drama["poster_path"], title=drama["name"], year=drama["year"], description=drama["description"], genres=drama["genres"]).grid(sticky="news", pady=(0,10))
+                drama_card = w.WatchlistDramaCard(parent_frames[i].scrollable_frame, cover_url=drama["poster_path"], title=drama["name"], year=drama["year"], description=drama["description"], genres=drama["genres"])
+                dropdown_list = self.categories
+                options = ["plan_to_watch","currently_watching","completed","on_hold","dropped"]
+                if category in options:
+                    dropdown_list.pop(index)
+                dropdown_list.insert(0,"Select an option")
+                drama_card.watchlist_dropdown.configure(values=dropdown_list)
+                drama_card.grid(sticky="news", pady=(0,10))
         print(watchlist)
 
 if __name__ == '__main__':
