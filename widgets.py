@@ -27,22 +27,32 @@ FONT_BUTTON = ('Poppins', 15, 'normal')
 
 
 class ScrollableFrame(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
-        super().__init__(parent, *args, **kwargs)
+    def __init__(self, container, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.canvas = tk.Canvas(self, width=346, height=290, bg='#212121', bd=0, highlightthickness=0, relief='ridge')
 
-        self.canvas = tk.Canvas(self, bg='#212121')
-        self.scrollbar = tk.Scrollbar(self, orient='vertical', command=self.canvas.yview)
-        self.scrollable_frame = tk.Frame(self.canvas, bg='#212121')
+        #self.scrollbar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
 
-        self.scrollable_frame.bind('<Configure>', lambda e: self.canvas.configure(scrollregion=self.canvas.bbox('all')))
+        self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self.canvas.yview, fg_color='#202020',scrollbar_color='#303030', scrollbar_hover_color='#404040', width=30, corner_radius=10)
 
-        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor='nw')
+        self.scrollable_frame = tk.Frame(self.canvas)
+
+        self.scrollable_frame.bind("<Configure>", lambda *args, **kwargs: self.canvas.configure(
+            scrollregion=self.canvas.bbox("all")))
+
+        self.bind_all("<MouseWheel>", self._on_mousewheel)
+        self.bind("<Destroy>", lambda *args, **kwargs: self.unbind_all("<MouseWheel>"))
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        self.canvas.grid(row=0, column=0, sticky="")
 
-        self.canvas.grid(row=0, column=0, sticky="news")
-        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.scrollbar.grid(row=0, column=1, sticky="nes")
 
-
+    def _on_mousewheel(self, event):
+        self.canvas.yview_scroll(-1 * round(event.delta / 120), "units")
 
 
 class WrappingLabel(ctk.CTkLabel):

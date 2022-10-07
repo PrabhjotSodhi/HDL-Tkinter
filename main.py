@@ -113,7 +113,7 @@ class SignupScreen(ctk.CTkFrame):
         password = w.InputBox(content_frame, placeholder_text="Create a password ", width=366, height=48, show="*")
         password.grid(pady=(0,27))
 
-        w.Button(content_frame, text="Sign Up", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_up(parent, nickname, username, password)).grid()
+        w.Button(content_frame, text="Sign Up", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.sign_up(parent, username, password)).grid()
 
         signup_frame = ctk.CTkFrame(content_frame, fg_color="#212121")
         signup_frame.grid(sticky="", pady=(87,28))
@@ -188,24 +188,43 @@ class HomeScreen(ctk.CTkFrame):
 class WatchListScreen(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
-
+        
         self.configure(fg_color="#212121")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        content_frame = ctk.CTkFrame(self, fg_color="#212121")
+        content_frame = ctk.CTkFrame(self, fg_color="#212121", width=366, height=512, corner_radius=0)
         content_frame.grid(row=0, column=0, sticky="")
         content_frame.grid_columnconfigure(0, weight=1)
         content_frame.grid_rowconfigure(0, weight=1)
         content_frame.grid_propagate(False)
+        
+        ctk.CTkLabel(content_frame, text="My Watchlist", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=1, sticky="nws", pady=(0,0))
+        #watchlist_scrollbar = ctk.CTkScrollbar(content_frame, orientation="vertical", command=watchlist_frame.yview)
+        #watchlist_scrollbar.grid(row=3, column=1, sticky="ns")
+        #watchlist_frame.configure(yscrollcommand=watchlist_scrollbar.set)
+        watchlist_frame = w.ScrollableFrame(content_frame, width=366, height=290, bg="red")
+        watchlist_frame.grid(row=3, column=0, sticky="nws")
 
-        ctk.CTkLabel(content_frame, text="My Watchlist", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(sticky="nws", pady=(0,8))
+        # Categories in watchlist_frame
+        """
+        categories= ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
+        for i, category in enumerate(categories):
+            ctk.CTkLabel(watchlist_frame, text=category, text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=i, sticky="nws", pady=(0,0))
+            drama_card_frame = ctk.CTkFrame(watchlist_frame, fg_color="#212121", width=366, height=168*1.25, corner_radius=0)
+            drama_card_frame.grid(row=i+1, sticky="nws", pady=(0,0))
+            drama_card_frame.grid_columnconfigure(0, weight=1)
+            drama_card_frame.grid_rowconfigure(0, weight=1)
+            drama_card_frame.grid_propagate(False)
+            dramas = db.get_dramas(category)
+        """
 
-        watchlist_frame = ctk.CTkFrame(self, fg_color="#333333", height=290, corner_radius=0)
-        watchlist_frame.grid(row=1, sticky="nws", pady=(0,0))
-        watchlist_frame.grid_columnconfigure(0, weight=1)
-        watchlist_frame.grid_rowconfigure(0, weight=1)
-        watchlist_frame.grid_propagate(False)
+        for i in range(8):
+            ctk.CTkLabel(watchlist_frame.scrollable_frame, fg_color='#404040', bg_color='#202020', text=f"Line {i + 1}", text_font=w.FONT_DRAMA_TITLE).grid(row=i,pady=(10, 0))
+
+        # Footer
+        w.Button(content_frame, text="Search Drama", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.HomeScreen)).grid(row=4,pady=(22,0))
+        w.footer(content_frame).grid(row=5, sticky="")
 
 if __name__ == '__main__':
     app = App()

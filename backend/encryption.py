@@ -83,7 +83,6 @@ class PasswordDatabase:
             pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
         return True
 
-
 '''
 db = PasswordDatabase()
 
