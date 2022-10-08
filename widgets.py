@@ -37,8 +37,7 @@ class ScrollableFrame(tk.Frame):
         if orientation == 'vertical': self.canvas = tk.Canvas(self, width=366, height=290, bg='#212121', bd=0, highlightthickness=0, relief='ridge')
         elif orientation == 'horizontal': self.canvas = tk.Canvas(self, width=366, height=230, bg='#212121', bd=0, highlightthickness=0, relief='ridge')
         self.scrollable_frame = tk.Frame(self.canvas, bg="#212121")
-        self.scrollable_frame.bind("<Configure>", lambda *args, **kwargs: self.canvas.configure(
-            scrollregion=self.canvas.bbox("all")))
+        self.scrollable_frame.bind("<Configure>", lambda *args, **kwargs: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
         self.bind_all("<MouseWheel>", self._on_mousewheel)
         self.bind("<Destroy>", lambda *args, **kwargs: self.unbind_all("<MouseWheel>"))

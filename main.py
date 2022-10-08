@@ -208,16 +208,16 @@ class WatchListScreen(ctk.CTkFrame):
         # Categories in watchlist_frame
         watchlist_frame = w.ScrollableFrame(content_frame, "vertical")
         watchlist_frame.grid(row=3, column=0, sticky="nws")
-        self.categories= ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
+        self.categories= ["Select an option", "Plan to watch","Currently watching","Completed","On hold","Dropped"]
         self.drama_category_frames = []
         for i, category in enumerate(self.categories):
-            title_index = [0,2,4,6,8]
-            drama_index = [1,3,5,7,9]
-            ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, text_color="#FFFFFF", bg_color="#212121", anchor="w").grid(row=title_index[i], column=i, sticky="nws", pady=(0,0))
-            drama_category_frame = w.ScrollableFrame(watchlist_frame.scrollable_frame, "horizontal")
-            #drama_category_frame.update_watchlist_button.configure(command=lambda: self.check_dropdown(drama_card.watchlist_dropdown.get(), result))
-            drama_category_frame.grid(row=drama_index[i], sticky="nws", pady=(0,0))
-            self.drama_category_frames.append(drama_category_frame)
+            title_index = [None,0,2,4,6,8]
+            drama_index = [None,1,3,5,7,9]
+            if i != 0:
+                ctk.CTkLabel(watchlist_frame.scrollable_frame, text=category, text_font=w.FONT_CATEGORY_TITLE, text_color="#FFFFFF", bg_color="#212121", anchor="w").grid(row=title_index[i], column=0, sticky="nws", pady=(0,0))
+                drama_category_frame = w.ScrollableFrame(watchlist_frame.scrollable_frame, "horizontal")
+                drama_category_frame.grid(row=drama_index[i], sticky="nws", pady=(0,0))
+                self.drama_category_frames.append(drama_category_frame)
 
         # Footer
         w.Button(content_frame, text="Search Drama", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.HomeScreen)).grid(row=4,pady=(22,0))
@@ -239,12 +239,21 @@ class WatchListScreen(ctk.CTkFrame):
                 drama_card = w.WatchlistDramaCard(parent_frames[index].scrollable_frame, cover_url=drama["poster_path"], title=drama["name"], year=drama["year"], description=drama["description"], genres=drama["genres"])
                 dropdown_list = self.categories
                 options = ["plan_to_watch","currently_watching","completed","on_hold","dropped"]
-                if category in options:
-                    dropdown_list.pop(index)
-                dropdown_list.insert(0,"Select an option")
-                drama_card.watchlist_dropdown.configure(values=dropdown_list)
+                #if category in options:
+                #    print(index)
+                #    dropdown_list.pop(index)
+                #drama_card.watchlist_dropdown.configure(values=dropdown_list)
+                drama_card.update_watchlist_button.configure(command=lambda drama_card=drama_card, drama=drama: self.check_dropdown(drama_card.watchlist_dropdown.get(), drama))
                 drama_card.grid(row=0, column=i, sticky="news", pady=(0,10), padx=(0,20))
         print(watchlist)
+    
+    def check_dropdown(self, dropdown, result):
+        print(dropdown)
+        add_to_watchlist = db.add_to_watchlist(dropdown, result["id"])
+        if add_to_watchlist:
+            messagebox.showinfo("Successfully added to watchlist!",f"{result['name']} has been added to your watchlist")
+        elif not add_to_watchlist:
+            messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
 
 if __name__ == '__main__':
     app = App()
