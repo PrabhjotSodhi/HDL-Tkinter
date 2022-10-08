@@ -128,7 +128,6 @@ class SignupScreen(ctk.CTkFrame):
         self.user_data = db.register(user=str(username.get()), password=str(password.get()))
         print(f"nickname:, username:{username.get()}, password:{password.get()}, {self.user_data}")
         if self.user_data == "User already exists":
-            print("hahahah")
             messagebox.showwarning("User already exists","Please go to the sign in")
         elif self.user_data == "paswword < 6":
             messagebox.showwarning("Password too short","Please enter a password with at least 6 characters")
@@ -185,7 +184,6 @@ class HomeScreen(ctk.CTkFrame):
         elif not add_to_watchlist:
             messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
 
-
 class WatchListScreen(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -235,25 +233,27 @@ class WatchListScreen(ctk.CTkFrame):
         for index, category in enumerate(watchlist):
             for i, id in enumerate(watchlist[category]):
                 drama = tmdb.search_drama_by_id(id)
-                print(parent_frames[index])
                 drama_card = w.WatchlistDramaCard(parent_frames[index].scrollable_frame, cover_url=drama["poster_path"], title=drama["name"], year=drama["year"], description=drama["description"], genres=drama["genres"])
-                dropdown_list = self.categories
-                options = ["plan_to_watch","currently_watching","completed","on_hold","dropped"]
-                #if category in options:
-                #    print(index)
-                #    dropdown_list.pop(index)
-                #drama_card.watchlist_dropdown.configure(values=dropdown_list)
                 drama_card.update_watchlist_button.configure(command=lambda drama_card=drama_card, drama=drama: self.check_dropdown(drama_card.watchlist_dropdown.get(), drama))
+                drama_card.delete_watchlist_button.configure(command=lambda drama=drama: self.check_dropdown_remove(drama))
                 drama_card.grid(row=0, column=i, sticky="news", pady=(0,10), padx=(0,20))
-        print(watchlist)
     
     def check_dropdown(self, dropdown, result):
-        print(dropdown)
         add_to_watchlist = db.add_to_watchlist(dropdown, result["id"])
         if add_to_watchlist:
             messagebox.showinfo("Successfully added to watchlist!",f"{result['name']} has been added to your watchlist")
         elif not add_to_watchlist:
             messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
+    
+    def check_dropdown_remove(self, result):
+        proceed = messagebox.askquestion("Remove from watchlist",f"Would you like to remove {result['name']} from your watchlist?")
+        if proceed == "yes":
+            remove_from_watchlist = db.remove_from_watchlist(result["id"])
+            if remove_from_watchlist:
+                messagebox.showinfo("Successfully removed from watchlist!",f"{result['name']} has been removed from your watchlist")
+            elif not remove_from_watchlist:
+                messagebox.showwarning("Drama not removed",f"{result['name']} failed to be removed from your watchlist")
+        
 
 if __name__ == '__main__':
     app = App()

@@ -79,9 +79,24 @@ class PasswordDatabase:
         else:
             return False
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
-            print(data[self.user])
+            print(data[self.user][2])
             pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
         return True
+
+    def remove_from_watchlist(self, drama_id):
+        with open('encrypted_dict.json', 'rb') as f:
+            data = pickle.load(f)
+        for category in data[self.user][2]:
+            for id in data[self.user][2][category]:
+                if drama_id == id:
+                    data[self.user][2][category].remove(drama_id)
+                    with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
+                        print(data[self.user][2])
+                        pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
+                    return True
+        print("Drama not found in category")
+        return False
+    
     def get_dramas(self):
         with open('encrypted_dict.json', 'rb') as f:
             data = pickle.load(f)
