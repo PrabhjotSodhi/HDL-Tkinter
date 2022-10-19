@@ -24,10 +24,11 @@ class PasswordDatabase:
 
     def register(self, nickname=None, user=None, password=None):
         if user in self.data: # if the user already exists in the database, return False
-            print("nidnaidniwand")
             return "User already exists"
         if len(password) < 6:
             return "paswword < 6"
+        if len(user) == 0:
+            return "User empty"
         pwd_hash = self.hash_password(password) # hash the password
         self.data[user] = [nickname, pwd_hash, watchlist] # add the user to the dictionary
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
@@ -36,7 +37,6 @@ class PasswordDatabase:
         return self.data[user] # Use successfully registered
         
     def login(self, user, password):
-        #print(self.data)
         if user not in self.data: # if the user does not exist in the database, return False
             return "User does not exist"
         pwd_bytes = password.encode('utf-8')
@@ -56,13 +56,11 @@ class PasswordDatabase:
             data = pickle.load(f)
         
         options = ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
-        print(data[self.user][2])
         for category in data[self.user][2]:
             for id in data[self.user][2][category]:
                 if drama_id == id and value in options:
                     while drama_id in data[self.user][2][category]:
                         data[self.user][2][category].remove(id)
-        print(data[self.user][2])
 
         if value == "Select an option":
             return False
@@ -79,7 +77,6 @@ class PasswordDatabase:
         else:
             return False
         with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
-            print(data[self.user][2])
             pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
         return True
 
@@ -91,10 +88,8 @@ class PasswordDatabase:
                 if drama_id == id:
                     data[self.user][2][category].remove(drama_id)
                     with open('encrypted_dict.json', 'wb') as f: # save the dictionary to the file
-                        print(data[self.user][2])
                         pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
                     return True
-        print("Drama not found in category")
         return False
     
     def get_dramas(self):
@@ -105,22 +100,6 @@ class PasswordDatabase:
             return data[user][2]
         except:
             return False
-
-'''
-db = PasswordDatabase()
-
-# Test the system
-print("-------------Registering users-------------")
-print(db.register('john','john', '123'))
-print(db.register('john','john', '123'))
-print(db.register('john','jeff', '345'))
-print(db.register('john','joe', '456'))
-
-print("-------------Login-------------")
-print(db.login('john', '123'))
-print(db.login('john', '345'))
-print(db.login('joe', '678'))
-'''
 
 
 #{user: [nickname, pass, {currently watching: [],  }}

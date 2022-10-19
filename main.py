@@ -32,8 +32,8 @@ class App(ctk.CTk):
         self.WatchListScreen = WatchListScreen
 
         for i in {LoginScreen, SignupScreen, HomeScreen, WatchListScreen}:
-            frame = i(self)
-            self.screens[i] = frame
+            frame = i(self) # e.x LoginScreen(self)
+            self.screens[i] = frame # Append LoginScreen(self) to screens dictionary
             frame.grid(row=0, column=0, sticky="nsew")
         
         self.show_screen(LoginScreen)
@@ -81,12 +81,10 @@ class LoginScreen(ctk.CTkFrame):
 
     def sign_in(self, parent, username, password):
         self.user_data = db.login(str(username.get()), str(password.get()))
-        print(f"username:{username.get()}, password:{password.get()}, {self.user_data}")
         if self.user_data == "User does not exist":
             messagebox.showwarning("User not found","Please enter the correct username")
         elif self.user_data and not self.user_data == "User does not exist":
             self.user_data = self.user_data[::len(self.user_data)-1]
-            #parent.HomeScreen.title.configure(text=f"Search Drama, {user_data[0]}")
             parent.show_screen(parent.HomeScreen)
         else:
             messagebox.showwarning("Please try again","Please enter the correct username and/or password")
@@ -126,14 +124,14 @@ class SignupScreen(ctk.CTkFrame):
 
     def sign_up(self, parent, username, password):
         self.user_data = db.register(user=str(username.get()), password=str(password.get()))
-        print(f"nickname:, username:{username.get()}, password:{password.get()}, {self.user_data}")
         if self.user_data == "User already exists":
             messagebox.showwarning("User already exists","Please go to the sign in")
         elif self.user_data == "paswword < 6":
             messagebox.showwarning("Password too short","Please enter a password with at least 6 characters")
-        elif self.user_data and not self.user_data == "User already exists" and not self.user_data == "paswword < 6":
+        elif self.user_data == "User empty":
+            messagebox.showwarning("Username empty","Username cannot be empty")
+        elif self.user_data and not self.user_data == "User already exists" and not self.user_data == "paswword < 6" and not self.user_data == "User empty":
             self.user_data = self.user_data[::len(self.user_data)-1]
-            #parent.HomeScreen.title.configure(text=f"Search Drama, {user_data[0]}")
             parent.show_screen(parent.HomeScreen)
         else:
             messagebox.showwarning("Please try again","Please enter the correct username and/or password")
@@ -164,12 +162,15 @@ class HomeScreen(ctk.CTkFrame):
         drama_card_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=366, height=168*1.25, corner_radius=0)
         drama_card_frame.grid(row=3, sticky="nws", pady=(14,0))
 
-        w.Button(content_frame, text="View current watchlist", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.WatchListScreen)).grid(row=4,pady=(32,0))
+        w.Button(content_frame, text="View current watchlist", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: self.view_current_watchlist(parent)).grid(row=4,pady=(32,0))
 
         w.footer(content_frame).grid(row=5, sticky="", pady=(0,0))
 
+    def view_current_watchlist(self, parent):
+        parent.show_screen(parent.WatchListScreen)
+        parent.screens[WatchListScreen].update_watchlist()
+
     def search_drama(self, search, parent_frame):
-        print(search.get())
         result = tmdb.search_drama(search.get())
         for widgets in parent_frame.winfo_children():
             widgets.destroy()
@@ -201,7 +202,7 @@ class WatchListScreen(ctk.CTkFrame):
         title_frame = ctk.CTkFrame(content_frame, fg_color="#212121", width=242, height=48, corner_radius=0)
         title_frame.grid(row=1, column=0, sticky="nws", pady=(0,8))
         ctk.CTkLabel(title_frame, text="My Watchlist", text_font=w.FONT_TITLE, text_color="#FFFFFF", anchor="w").grid(row=0, column=0, sticky="nws")
-        ctk.CTkButton(title_frame, image=PhotoImage(file='./reload.png'), text="", fg_color="#212121",hover_color="#212121", width=48, height=24, corner_radius=0, command=lambda: self.update_watchlist(self.drama_category_frames)).grid(row=0, column=1, sticky="nesw", padx=(0  ,0))
+        ctk.CTkButton(title_frame, image=PhotoImage(file='./reload.png'), text="", fg_color="#212121",hover_color="#212121", width=48, height=24, corner_radius=0, command=lambda: self.update_watchlist()).grid(row=0, column=1, sticky="nesw", padx=(0  ,0))
 
         # Categories in watchlist_frame
         watchlist_frame = w.ScrollableFrame(content_frame, "vertical")
@@ -220,11 +221,9 @@ class WatchListScreen(ctk.CTkFrame):
         # Footer
         w.Button(content_frame, text="Search Drama", width=366, height=48, text_font=w.FONT_BUTTON, command=lambda: parent.show_screen(parent.HomeScreen)).grid(row=4,pady=(22,0))
         w.footer(content_frame).grid(row=5, sticky="")
-        #watchlist_scrollbar = ctk.CTkScrollbar(content_frame, orientation="vertical", command=watchlist_frame.yview)
-        #watchlist_scrollbar.grid(row=3, column=1, sticky="ns")
-        #watchlist_frame.configure(yscrollcommand=watchlist_scrollbar.set)
     
-    def update_watchlist(self, parent_frames):
+    def update_watchlist(self):
+        parent_frames = self.drama_category_frames
         watchlist = db.get_dramas()
         test_drama = tmdb.search_drama_by_id(129760)
         for frame in parent_frames:
@@ -241,7 +240,8 @@ class WatchListScreen(ctk.CTkFrame):
     def check_dropdown(self, dropdown, result):
         add_to_watchlist = db.add_to_watchlist(dropdown, result["id"])
         if add_to_watchlist:
-            messagebox.showinfo("Successfully added to watchlist!",f"{result['name']} has been added to your watchlist")
+            messagebox.showinfo("Successfully added to watchlist!",f"{result['name']} has been added to your watchlist in {dropdown} category")
+            self.update_watchlist()
         elif not add_to_watchlist:
             messagebox.showwarning("Select an option","Please chose one of the options in the dropdown")
     

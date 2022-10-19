@@ -38,8 +38,6 @@ class TMDB:
             "genres": genres,
             "poster_path": f"http://image.tmdb.org/t/p/original{filter_results[0]['poster_path']}",
         }
-        #final_json = json.dumps(filter_json)
-        #print(filter_json["genres"])
         return filter_json
 
     def search_drama_by_id(self, id):

@@ -6,19 +6,6 @@ import urllib.request
 from io import BytesIO
 import webbrowser
 
-from requests import delete
-from backend.encryption import PasswordDatabase
-
-db = PasswordDatabase()
-
-
-"""
-root = ctk.CTk()
-root.geometry('450x576')
-root.configure(bg='#212121')
-"""
-
-
 # CONSTANTS
 FONT_INPUT = ('Poppins', 15, 'normal')
 FONT_TITLE = ('Poppins', 27, 'bold')
@@ -45,7 +32,6 @@ class ScrollableFrame(tk.Frame):
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
 
         if orientation == 'vertical':
-            #self.scrollbar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
             self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self.canvas.yview, fg_color='#202020',scrollbar_color='#303030', scrollbar_hover_color='#404040', width=25, corner_radius=10)
             self.canvas.configure(yscrollcommand=self.scrollbar.set)
             self.scrollbar.grid(row=0, column=1, sticky="nes")
@@ -216,17 +202,3 @@ class footer(ctk.CTkFrame):
 
         ctk.CTkLabel(bottom_frame, text="Powered by", text_font=FONT_INPUT, text_color="#FFFFFF", anchor="e").grid(row=0, sticky="nws")
         ctk.CTkButton(bottom_frame, text="TMDB API", text_font=FONT_INPUT, text_color="#48BB78", fg_color="#212121", hover_color="#212121", width=30, command=lambda aurl=tmdb_url:webbrowser.open_new(tmdb_url)).grid(row=0, column=1,pady=0,padx=0, sticky="nws")
-
-
-
-'''
-my_input = InputBox(root, placeholder_text="Enter your name", width=366, height=48)
-my_button = Button(root, text='Sign In', width=366, height=48, command=lambda: print(my_input.get()))
-my_drama_card = DramaCard(root, cover_url="http://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", title="Squid Game(2021)")
-
-#my_button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-#my_input.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
-my_drama_card.grid()
-
-root.mainloop()
-'''
