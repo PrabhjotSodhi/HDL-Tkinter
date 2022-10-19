@@ -27,6 +27,10 @@ class PasswordDatabase:
             return "User already exists"
         if len(password) < 6:
             return "paswword < 6"
+        if " " in password:
+            return "password has space"
+        if " " in user:
+            return "username has space"
         if len(user) == 0:
             return "User empty"
         pwd_hash = self.hash_password(password) # hash the password

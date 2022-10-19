@@ -130,7 +130,11 @@ class SignupScreen(ctk.CTkFrame):
             messagebox.showwarning("Password too short","Please enter a password with at least 6 characters")
         elif self.user_data == "User empty":
             messagebox.showwarning("Username empty","Username cannot be empty")
-        elif self.user_data and not self.user_data == "User already exists" and not self.user_data == "paswword < 6" and not self.user_data == "User empty":
+        elif self.user_data == "password has space":
+            messagebox.showwarning("No spaces allowed","Password cannot have spaces")
+        elif self.user_data == "username has space":
+            messagebox.showwarning("No spaces allowed","Username cannot have spaces")
+        elif self.user_data and not self.user_data == "User already exists" and not self.user_data == "paswword < 6" and not self.user_data == "User empty" and not self.user_data == "password has space" and not self.user_data == "user has space":
             self.user_data = self.user_data[::len(self.user_data)-1]
             parent.show_screen(parent.HomeScreen)
         else:
