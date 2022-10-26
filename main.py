@@ -211,9 +211,8 @@ class WatchListScreen(ctk.CTkFrame):
         # Categories in watchlist_frame
         watchlist_frame = w.ScrollableFrame(content_frame, "vertical")
         watchlist_frame.grid(row=3, column=0, sticky="nws")
-        self.categories= ["Select an option", "Plan to watch","Currently watching","Completed","On hold","Dropped"]
         self.drama_category_frames = []
-        for i, category in enumerate(self.categories):
+        for i, category in enumerate(db.options):
             title_index = [None,0,2,4,6,8]
             drama_index = [None,1,3,5,7,9]
             if i != 0:
@@ -229,7 +228,6 @@ class WatchListScreen(ctk.CTkFrame):
     def update_watchlist(self):
         parent_frames = self.drama_category_frames
         watchlist = db.get_dramas()
-        test_drama = tmdb.search_drama_by_id(129760)
         for frame in parent_frames:
             for widgets in frame.scrollable_frame.winfo_children():
                 widgets.destroy()

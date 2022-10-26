@@ -21,7 +21,7 @@ class PasswordDatabase:
                 self.data = pickle.load(f)
         except: # if file does not exist or is empty, create new dictionary
             self.data = {}
-
+        self.options = ["Select an option", "Plan to watch","Currently watching","Completed","On hold","Dropped"]
     def register(self, nickname=None, user=None, password=None):
         if user in self.data: # if the user already exists in the database, return False
             return "User already exists"
@@ -59,10 +59,9 @@ class PasswordDatabase:
         with open('encrypted_dict.json', 'rb') as f: # save the dictionary to the file
             data = pickle.load(f)
         
-        options = ["Plan to watch","Currently watching","Completed","On hold","Dropped"]
         for category in data[self.user][2]:
             for id in data[self.user][2][category]:
-                if drama_id == id and value in options:
+                if drama_id == id and value in self.options:
                     while drama_id in data[self.user][2][category]:
                         data[self.user][2][category].remove(id)
 
